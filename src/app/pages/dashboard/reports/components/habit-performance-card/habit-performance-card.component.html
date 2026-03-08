@@ -1,0 +1,43 @@
+<div
+    class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 flex flex-col h-full hover:shadow-md transition-shadow">
+    <div class="flex items-center justify-between mb-4">
+        <h3 class="text-base font-bold text-slate-900 truncate pr-4" [title]="title">
+            {{ title }}
+        </h3>
+        <span class="text-lg font-bold text-slate-900 shrink-0">
+            {{ completionRate }}%
+        </span>
+    </div>
+
+    <div class="mb-4">
+        <div class="flex justify-between text-xs text-slate-500 mb-1.5 font-medium">
+            <span>Taxa de sucesso</span>
+        </div>
+        <!-- ProgressBar inline -->
+        <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
+            <div class="bg-slate-900 h-2.5 rounded-full transition-all duration-500 ease-out"
+                [style.width]="completionRate + '%'">
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-auto">
+        <div class="text-xs text-slate-400 font-medium mb-1">Tendência (Últimos 7 dias)</div>
+
+        <!-- MiniBarChart inline -->
+        @if (!weeklyTrend || weeklyTrend.length === 0) {
+        <div class="h-10 w-full bg-slate-50 flex items-center justify-center text-xs text-slate-400 rounded">
+            Sem dados
+        </div>
+        } @else {
+        <div class="flex items-end gap-1.5 h-10 w-full mt-2">
+            @for (val of weeklyTrend; track $index) {
+            <div class="flex-1 rounded-t-sm transition-all duration-300"
+                [ngClass]="val === 1 ? 'bg-emerald-500 hover:bg-emerald-400' : 'bg-slate-200'"
+                [style.height]="val === 1 ? '100%' : '20%'" [title]="val === 1 ? 'Concluído' : 'Pendente/Falha'">
+            </div>
+            }
+        </div>
+        }
+    </div>
+</div>

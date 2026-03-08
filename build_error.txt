@@ -1,0 +1,143 @@
+﻿[33mÔØ»[39m Building...
+[32mÔ£ö[39m Building...
+[1mInitial chunk files[22m  [2m | [22m[1mNames[22m        [2m | [22m [1mRaw size[22m[2m | [22m[1mEstimated transfer size[22m
+[32mmain-HGRWFUHP.js[39m     [2m | [22m[2mmain[22m         [2m | [22m[36m411.94 kB[39m[2m | [22m               [36m97.99 kB[39m
+[32mstyles-OXIDXRT3.css[39m  [2m | [22m[2mstyles[22m       [2m | [22m [36m35.12 kB[39m[2m | [22m                [36m5.58 kB[39m
+[32mpolyfills-FFHMD2TL.js[39m[2m | [22m[2mpolyfills[22m    [2m | [22m [36m34.52 kB[39m[2m | [22m               [36m11.28 kB[39m
+
+[1m [22m                    [2m | [22m[1mInitial total[22m[2m | [22m[1m481.58 kB[22m[2m | [22m              [1m114.85 kB[22m
+
+Application bundle generation complete. [4.171 seconds]
+
+[1m[33m[33mÔû▓ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be replaced with the '.' operator.[0m [1m[35m[plugin angular-compiler][0m
+System.Management.Automation.RemoteException
+    src/app/pages/dashboard/goals/components/goal-card/goal-card.component.html:2:21:
+[37m      2 Ôöé     [ngClass]="goal?.[32misPrimary[37m ? 'border-2 border-slate-900' : 'bor...
+        ÔòÁ                      [32m~~~~~~~~~[0m
+System.Management.Automation.RemoteException
+  Error occurs in the template of component GoalCardComponent.
+System.Management.Automation.RemoteException
+    src/app/pages/dashboard/goals/components/goal-card/goal-card.component.ts:9:15:
+[37m      9 Ôöé   templateUrl: [32m'./goal-card.component.html'[37m,
+        ÔòÁ                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+System.Management.Automation.RemoteException
+System.Management.Automation.RemoteException
+[33mÔû▓ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be replaced with the '.' operator.[0m [1m[35m[plugin angular-compiler][0m
+System.Management.Automation.RemoteException
+    src/app/pages/dashboard/goals/components/goal-card/goal-card.component.html:5:23:
+[37m      5 Ôöé             @if (goal?.[32misPrimary[37m) {
+        ÔòÁ                        [32m~~~~~~~~~[0m
+System.Management.Automation.RemoteException
+  Error occurs in the template of component GoalCardComponent.
+System.Management.Automation.RemoteException
+    src/app/pages/dashboard/goals/components/goal-card/goal-card.component.ts:9:15:
+[37m      9 Ôöé   templateUrl: [32m'./goal-card.component.html'[37m,
+        ÔòÁ                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+System.Management.Automation.RemoteException
+System.Management.Automation.RemoteException
+[33mÔû▓ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be replaced with the '.' operator.[0m [1m[35m[plugin angular-compiler][0m
+System.Management.Automation.RemoteException
+    src/app/pages/dashboard/goals/components/goal-card/goal-card.component.html:11:81:
+[37m      11 Ôöé ..."text-lg font-bold text-slate-900 truncate" [title]="goal?.[32mtitle[37m">
+         ÔòÁ                                                               [32m~~~~~[0m
+System.Management.Automation.RemoteException
+  Error occurs in the template of component GoalCardComponent.
+System.Management.Automation.RemoteException
+    src/app/pages/dashboard/goals/components/goal-card/goal-card.component.ts:9:15:
+[37m      9 Ôöé   templateUrl: [32m'./goal-card.component.html'[37m,
+        ÔòÁ                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+System.Management.Automation.RemoteException
+System.Management.Automation.RemoteException
+[33mÔû▓ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be replaced with the '.' operator.[0m [1m[35m[plugin angular-compiler][0m
+System.Management.Automation.RemoteException
+    src/app/pages/dashboard/goals/components/goal-card/goal-card.component.html:12:25:
+[37m      12 Ôöé                 {{ goal?.[32mtitle[37m }}
+         ÔòÁ                          [32m~~~~~[0m
+System.Management.Automation.RemoteException
+  Error occurs in the template of component GoalCardComponent.
+System.Management.Automation.RemoteException
+    src/app/pages/dashboard/goals/components/goal-card/goal-card.component.ts:9:15:
+[37m      9 Ôöé   templateUrl: [32m'./goal-card.component.html'[37m,
+        ÔòÁ                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+System.Management.Automation.RemoteException
+System.Management.Automation.RemoteException
+[33mÔû▓ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be replaced with the '.' operator.[0m [1m[35m[plugin angular-compiler][0m
+System.Management.Automation.RemoteException
+    src/app/pages/dashboard/goals/components/goal-card/goal-card.component.html:17:15:
+[37m      17 Ôöé     @if (goal?.[32mdescription[37m) {
+         ÔòÁ                [32m~~~~~~~~~~~[0m
+System.Management.Automation.RemoteException
+  Error occurs in the template of component GoalCardComponent.
+System.Management.Automation.RemoteException
+    src/app/pages/dashboard/goals/components/goal-card/goal-card.component.ts:9:15:
+[37m      9 Ôöé   templateUrl: [32m'./goal-card.component.html'[37m,
+        ÔòÁ                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+System.Management.Automation.RemoteException
+System.Management.Automation.RemoteException
+[33mÔû▓ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be replaced with the '.' operator.[0m [1m[35m[plugin angular-compiler][0m
+System.Management.Automation.RemoteException
+    src/app/pages/dashboard/goals/components/goal-card/goal-card.component.html:19:17:
+[37m      19 Ôöé         {{ goal?.[32mdescription[37m }}
+         ÔòÁ                  [32m~~~~~~~~~~~[0m
+System.Management.Automation.RemoteException
+  Error occurs in the template of component GoalCardComponent.
+System.Management.Automation.RemoteException
+    src/app/pages/dashboard/goals/components/goal-card/goal-card.component.ts:9:15:
+[37m      9 Ôöé   templateUrl: [32m'./goal-card.component.html'[37m,
+        ÔòÁ                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+System.Management.Automation.RemoteException
+System.Management.Automation.RemoteException
+[33mÔû▓ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be replaced with the '.' operator.[0m [1m[35m[plugin angular-compiler][0m
+System.Management.Automation.RemoteException
+    src/app/pages/dashboard/goals/components/goal-card/goal-card.component.html:30:79:
+[37m      30 Ôöé ...bold text-slate-900">{{ Math.round(goal?.[32mprogress[37m || 0) }}%</span>
+         ÔòÁ                                             [32m~~~~~~~~[0m
+System.Management.Automation.RemoteException
+  Error occurs in the template of component GoalCardComponent.
+System.Management.Automation.RemoteException
+    src/app/pages/dashboard/goals/components/goal-card/goal-card.component.ts:9:15:
+[37m      9 Ôöé   templateUrl: [32m'./goal-card.component.html'[37m,
+        ÔòÁ                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+System.Management.Automation.RemoteException
+System.Management.Automation.RemoteException
+[33mÔû▓ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be replaced with the '.' operator.[0m [1m[35m[plugin angular-compiler][0m
+System.Management.Automation.RemoteException
+    src/app/pages/dashboard/goals/components/goal-card/goal-card.component.html:34:38:
+[37m      34 Ôöé                 [style.width]="(goal?.[32mprogress[37m || 0) + '%'">
+         ÔòÁ                                       [32m~~~~~~~~[0m
+System.Management.Automation.RemoteException
+  Error occurs in the template of component GoalCardComponent.
+System.Management.Automation.RemoteException
+    src/app/pages/dashboard/goals/components/goal-card/goal-card.component.ts:9:15:
+[37m      9 Ôöé   templateUrl: [32m'./goal-card.component.html'[37m,
+        ÔòÁ                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+System.Management.Automation.RemoteException
+System.Management.Automation.RemoteException
+[33mÔû▓ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be replaced with the '.' operator.[0m [1m[35m[plugin angular-compiler][0m
+System.Management.Automation.RemoteException
+    src/app/pages/dashboard/goals/components/goal-card/goal-card.component.html:48:21:
+[37m      48 Ôöé             {{ goal?.[32mdeadline[37m ? (goal?.deadline | date:'shortDate'...
+         ÔòÁ                      [32m~~~~~~~~[0m
+System.Management.Automation.RemoteException
+  Error occurs in the template of component GoalCardComponent.
+System.Management.Automation.RemoteException
+    src/app/pages/dashboard/goals/components/goal-card/goal-card.component.ts:9:15:
+[37m      9 Ôöé   templateUrl: [32m'./goal-card.component.html'[37m,
+        ÔòÁ                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+System.Management.Automation.RemoteException
+System.Management.Automation.RemoteException
+[33mÔû▓ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be replaced with the '.' operator.[0m [1m[35m[plugin angular-compiler][0m
+System.Management.Automation.RemoteException
+    src/app/pages/dashboard/goals/components/goal-card/goal-card.component.html:48:39:
+[37m      48 Ôöé ... {{ goal?.deadline ? (goal?.[32mdeadline[37m | date:'shortDate') : "Sem...
+         ÔòÁ                                [32m~~~~~~~~[0m
+System.Management.Automation.RemoteException
+  Error occurs in the template of component GoalCardComponent.
+System.Management.Automation.RemoteException
+    src/app/pages/dashboard/goals/components/goal-card/goal-card.component.ts:9:15:
+[37m      9 Ôöé   templateUrl: [32m'./goal-card.component.html'[37m,
+        ÔòÁ                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+System.Management.Automation.RemoteException
+[39m[22m
+Output location: D:\Projetos\MetasFlowNew\meta-flow-ng\dist\meta-flow-ng
+

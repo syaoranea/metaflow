@@ -1,0 +1,6 @@
+<button [disabled]="disabled" [type]="type" [class]="baseClasses">
+    @if (hasIcon) {
+    <span class="shrink-0"><ng-content select="[icon]"></ng-content></span>
+    }
+    <ng-content></ng-content>
+</button>

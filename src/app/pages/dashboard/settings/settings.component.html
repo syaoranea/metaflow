@@ -1,0 +1,263 @@
+<div
+    class="flex-1 flex flex-col h-full bg-slate-50 selection:bg-emerald-100 selection:text-emerald-900 overflow-x-hidden relative">
+    <div
+        class="sticky top-0 z-30 flex h-16 shrink-0 items-center justify-between border-b border-slate-200 bg-white/80 backdrop-blur-md px-6 shadow-sm">
+        <div class="flex flex-1 gap-x-4 lg:gap-x-6">
+            <div class="flex justify-end flex-1">
+                <div class="flex items-center gap-x-4 lg:gap-x-6">
+                    <span class="text-sm font-medium text-slate-700">Olá, {{ userName }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main class="flex-1 overflow-y-auto p-6 md:p-8 pb-32">
+        @if (!loaded) {
+        <div class="flex-1 flex items-center justify-center">
+            <div class="animate-pulse text-slate-400">Puxando preferências...</div>
+        </div>
+        } @else {
+        <div
+            class="mx-auto max-w-4xl w-full flex flex-col min-h-full animate-in fade-in slide-in-from-bottom-4 duration-500">
+
+            <div class="mb-8">
+                <h1 class="text-3xl font-bold tracking-tight text-slate-900 mb-2">Configurações & Perfil</h1>
+                <p class="text-slate-500 max-w-2xl">
+                    Gerencie seus dados pessoais, preferências do sistema, notificações e detalhes da assinatura.
+                </p>
+            </div>
+
+            <form [formGroup]="settingsForm"
+                class="flex flex-col gap-0 duration-500 delay-100 fill-mode-both animate-in fade-in zoom-in-95">
+
+                <!-- Profile Section -->
+                <div class="bg-white border text-slate-900 border-slate-200 shadow-sm p-6 sm:p-8 rounded-t-xl">
+                    <h2 class="text-lg font-bold mb-1">Perfil e Dados Pessoais</h2>
+                    <p class="text-sm text-slate-500 mb-6">Como você será identificado no aplicativo.</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Nome Completo</label>
+                            <input type="text" formControlName="name"
+                                class="block w-full rounded-lg border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2 px-3 border" />
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">E-mail</label>
+                            <input type="email" formControlName="email"
+                                class="block w-full rounded-lg border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2 px-3 border bg-slate-50"
+                                readonly />
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Profissão / Papel principal
+                                (Opcional)</label>
+                            <input type="text" formControlName="profession"
+                                class="block w-full rounded-lg border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2 px-3 border"
+                                placeholder="Ex: Engenheiro de Software" />
+                        </div>
+                    </div>
+                    <div class="mt-6 flex items-center gap-4">
+                        <div
+                            class="h-16 w-16 bg-slate-100 rounded-full flex items-center justify-center border border-slate-200 text-slate-400 font-bold text-xl uppercase">
+                            {{ userName.charAt(0) }}
+                        </div>
+                        <button type="button"
+                            class="text-sm font-semibold text-indigo-600 hover:text-indigo-500 transition-colors">
+                            Alterar foto de perfil
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Goals Preferences Section -->
+                <div class="bg-white border-x border-b text-slate-900 border-slate-200 p-6 sm:p-8">
+                    <h2 class="text-lg font-bold mb-1">Preferências de Metas e Hábitos</h2>
+                    <p class="text-sm text-slate-500 mb-6">Ajuste como o Meta Flow deve se comportar para o seu ritmo.
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Foco Principal no
+                                momento</label>
+                            <select formControlName="mainFocus"
+                                class="block w-full rounded-lg border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2.5 px-3 border">
+                                <option value="Saúde & Bem-estar">Saúde & Bem-estar</option>
+                                <option value="Finanças & Investimentos">Finanças & Investimentos</option>
+                                <option value="Carreira & Estudos">Carreira & Estudos</option>
+                                <option value="Equilíbrio Geral">Equilíbrio Geral</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Frequência padrão para novos
+                                hábitos</label>
+                            <select formControlName="defaultHabitFrequency"
+                                class="block w-full rounded-lg border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2.5 px-3 border">
+                                <option value="daily">Diariamente</option>
+                                <option value="weekly">Semanalmente (Escolher dias)</option>
+                                <option value="monthly">Mensalmente</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Alvo de Hábitos
+                                Principais</label>
+                            <div class="flex items-center gap-4">
+                                <input type="number" formControlName="yearlyTarget" min="1" max="50"
+                                    class="block w-24 rounded-lg border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2 px-3 border" />
+                                <span class="text-sm text-slate-500">hábitos simultâneos recomendados</span>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-2">Exibição de Progresso</label>
+                            <div class="flex items-center gap-6">
+                                <label class="flex items-center gap-2 text-sm text-slate-700 cursor-pointer">
+                                    <input type="radio" value="percentage" formControlName="showProgressAs"
+                                        class="text-indigo-600 focus:ring-indigo-600 border-slate-300" />
+                                    Porcentagem (%)
+                                </label>
+                                <label class="flex items-center gap-2 text-sm text-slate-700 cursor-pointer">
+                                    <input type="radio" value="points" formControlName="showProgressAs"
+                                        class="text-indigo-600 focus:ring-indigo-600 border-slate-300" />
+                                    Pontos Fixos
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notifications Section -->
+                <div class="bg-white border-x border-b text-slate-900 border-slate-200 p-6 sm:p-8"
+                    formGroupName="notifications">
+                    <h2 class="text-lg font-bold mb-1">Notificações</h2>
+                    <p class="text-sm text-slate-500 mb-6">Mantenha-se responsável ou evite distrações.</p>
+                    <div class="space-y-4">
+                        <label class="flex items-start gap-3 cursor-pointer group">
+                            <input type="checkbox" formControlName="dailyReminder"
+                                class="mt-1 h-4 w-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-600" />
+                            <div>
+                                <span
+                                    class="text-sm font-semibold text-slate-900 block group-hover:text-indigo-600 transition-colors">Lembrete
+                                    Diário de Execução</span>
+                                <span class="text-xs text-slate-500 block">Notificação push no final do dia para
+                                    preencher hábitos não marcados.</span>
+                            </div>
+                        </label>
+                        <label class="flex items-start gap-3 cursor-pointer group">
+                            <input type="checkbox" formControlName="weeklySummary"
+                                class="mt-1 h-4 w-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-600" />
+                            <div>
+                                <span
+                                    class="text-sm font-semibold text-slate-900 block group-hover:text-indigo-600 transition-colors">Resumo
+                                    Semanal (E-mail)</span>
+                                <span class="text-xs text-slate-500 block">Receba um relatório de performance todo
+                                    domingo à noite.</span>
+                            </div>
+                        </label>
+                        <label class="flex items-start gap-3 cursor-pointer group">
+                            <input type="checkbox" formControlName="delayedGoalAlert"
+                                class="mt-1 h-4 w-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-600" />
+                            <div>
+                                <span
+                                    class="text-sm font-semibold text-slate-900 block group-hover:text-indigo-600 transition-colors">Alerta
+                                    de Metas Atrasadas</span>
+                                <span class="text-xs text-slate-500 block">Avisar quando o prazo de uma meta estiver
+                                    expirando e o progresso baixo.</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Security & Billing (Simplified forms) -->
+                <div
+                    class="bg-white border-x border-b text-slate-900 border-slate-200 p-6 sm:p-8 relative overflow-hidden">
+                    <div class="flex flex-col md:flex-row justify-between gap-6 relative z-10">
+                        <div class="flex-1 space-y-4">
+                            <h2 class="text-lg font-bold mb-1">Segurança</h2>
+                            <button type="button"
+                                class="text-sm font-semibold py-2 px-4 border border-slate-300 rounded-lg shrink-0 w-max hover:bg-slate-50 transition-colors">
+                                Alterar Senha de Acesso
+                            </button>
+                            <div class="pt-2">
+                                <label class="flex items-center gap-3 cursor-pointer">
+                                    <input type="checkbox" formControlName="twoFactorEnabled"
+                                        class="h-4 w-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-600" />
+                                    <span class="text-sm font-semibold text-slate-900 block">Autenticação de Dois
+                                        Fatores (2FA)</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="w-px bg-slate-200 hidden md:block"></div>
+
+                        <div class="flex-1 space-y-4">
+                            <h2 class="text-lg font-bold mb-1 text-indigo-900">Assinatura</h2>
+                            <div class="bg-indigo-50 border border-indigo-100 rounded-lg p-4">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-sm font-bold text-indigo-900">Plano Atual</span>
+                                    <span
+                                        class="text-xs font-bold text-white bg-indigo-600 px-2 py-0.5 rounded uppercase">{{
+                                        currentPlan }}</span>
+                                </div>
+                                <p class="text-xs text-indigo-700/80 mb-4">
+                                    {{ currentPlan === 'pro' ? 'Acesso ilimitado a análises avançadas, gamificação total
+                                    e exportações.' : 'O plano básico permite tracking ilimitado, mas bloqueia insights
+                                    avançados.' }}
+                                </p>
+                                <button type="button"
+                                    class="text-sm w-full font-bold py-2 px-4 rounded-md transition-colors bg-indigo-600 text-white hover:bg-indigo-700">
+                                    Gerenciar Assinatura
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Danger Zone -->
+                <div
+                    class="bg-red-50/50 border-x border-b border-rose-200 p-6 sm:p-8 rounded-b-xl flex flex-col md:flex-row items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-lg font-bold text-rose-900 mb-1">Zona de Perigo</h2>
+                        <p class="text-sm text-rose-700/80">A exclusão da sua conta e de todos os seus dados de
+                            rastreamento é irreversível.</p>
+                    </div>
+                    <button type="button"
+                        class="shrink-0 font-semibold px-4 py-2 border border-rose-500 text-rose-600 hover:bg-rose-50 rounded-lg text-sm transition-colors">
+                        Excluir minha conta
+                    </button>
+                </div>
+
+            </form>
+        </div>
+        }
+    </main>
+
+    <!-- SaveBar -->
+    @if (isDirty) {
+    <div
+        class="fixed bottom-0 left-0 lg:left-64 right-0 p-4 bg-white/80 backdrop-blur-md border-t border-slate-200 z-40 animate-in slide-in-from-bottom-full duration-300">
+        <div class="max-w-4xl mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></div>
+                <span class="text-sm font-semibold text-slate-700">Você possui alterações não salvas.</span>
+            </div>
+            <div class="flex items-center gap-3">
+                <button type="button" (click)="cancel()"
+                    class="px-4 py-2 text-sm font-semibold text-slate-600 hover:bg-slate-100 rounded-lg transition-colors focus:outline-none"
+                    [disabled]="isSaving">
+                    Descartar
+                </button>
+                <button type="button" (click)="save()"
+                    class="px-4 py-2 text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 shadow-sm hover:shadow rounded-lg transition-all focus:outline-none flex items-center min-w-[120px] justify-center"
+                    [disabled]="isSaving">
+                    @if (isSaving) {
+                    <svg class="animate-spin h-4 w-4 text-white" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"
+                            fill="none"></circle>
+                        <path class="opacity-75" fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                        </path>
+                    </svg>
+                    } @else {
+                    Salvar Alterações
+                    }
+                </button>
+            </div>
+        </div>
+    </div>
+    }
+</div>

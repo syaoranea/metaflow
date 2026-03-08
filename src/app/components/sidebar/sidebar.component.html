@@ -1,0 +1,56 @@
+<!-- Mobile Menu Button - visible only on small screens -->
+<button class="md:hidden fixed bottom-6 right-6 z-50 p-4 bg-slate-900 text-white rounded-full shadow-lg"
+    (click)="toggleMobileMenu()">
+    @if (isMobileOpen) {
+    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+    </svg>
+    } @else {
+    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+    }
+</button>
+
+<!-- Overlay for mobile -->
+@if (isMobileOpen) {
+<div class="md:hidden fixed inset-0 bg-slate-900/20 z-30 pointer-events-auto transition-opacity" (click)="closeMenu()">
+</div>
+}
+
+<!-- Sidebar definition -->
+<aside
+    class="fixed md:sticky top-0 left-0 z-40 h-screen w-64 bg-white border-r border-slate-200 transform transition-transform duration-300 ease-in-out flex flex-col md:translate-x-0"
+    [class]="isMobileOpen ? 'translate-x-0 overflow-y-auto' : '-translate-x-full overflow-hidden'">
+    <!-- Logo context -->
+    <div class="flex h-16 items-center border-b border-slate-200 px-6 shrink-0">
+        <a routerLink="/dashboard" class="flex items-center gap-2" (click)="closeMenu()">
+            <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-slate-900 text-white font-bold text-lg">M
+            </div>
+            <span class="text-xl font-semibold tracking-tight text-slate-900">Meta Flow</span>
+        </a>
+    </div>
+
+    <!-- Links Navigation -->
+    <div class="flex-1 overflow-y-auto py-6 px-4">
+        <nav class="space-y-1">
+            @for (link of links; track link.name) {
+            <a [routerLink]="link.href" routerLinkActive="bg-slate-50 text-slate-900 !text-slate-900"
+                [routerLinkActiveOptions]="{exact: link.href === '/dashboard'}" #rla="routerLinkActive"
+                (click)="closeMenu()"
+                class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors text-slate-600 hover:bg-slate-50 hover:text-slate-900 relative"
+                [class.bg-slate-50]="rla.isActive">
+                @if (rla.isActive) {
+                <span class="absolute left-0 top-1/2 -translate-y-1/2 h-5 w-1 rounded-r-full bg-slate-900"></span>
+                }
+                <div class="shrink-0" [class.text-slate-900]="rla.isActive" [class.text-slate-400]="!rla.isActive"
+                    [innerHTML]="link.icon"></div>
+                {{link.name}}
+            </a>
+            }
+        </nav>
+    </div>
+</aside>

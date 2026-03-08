@@ -1,0 +1,73 @@
+@if (isOpen) {
+<div
+    class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm animate-in fade-in duration-200">
+    <div class="w-full max-w-md bg-white rounded-2xl shadow-xl overflow-hidden animate-in zoom-in-95 duration-200 fill-mode-both"
+        (click)="$event.stopPropagation()">
+        <div class="flex items-center justify-between px-6 py-4 border-b border-slate-100">
+            <h2 class="text-lg font-bold text-slate-900">Novo Hábito</h2>
+            <button (click)="close()"
+                class="text-slate-400 hover:text-slate-900 p-1 rounded-md transition-colors focus:outline-none">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+
+        <form [formGroup]="habitForm" (ngSubmit)="submit()" class="p-6">
+            <div class="space-y-4">
+                <div>
+                    <label for="title" class="block text-sm font-medium text-slate-700 mb-1">Nome do hábito *</label>
+                    <input id="title" type="text" autofocus formControlName="title" placeholder="Ex: Ler 10 páginas"
+                        class="block w-full rounded-lg border-0 py-2.5 px-3 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-slate-900 sm:text-sm" />
+                </div>
+
+                <div>
+                    <label for="goalId" class="block text-sm font-medium text-slate-700 mb-1">Meta vinculada *</label>
+                    <select id="goalId" formControlName="goalId"
+                        class="block w-full rounded-lg border-0 py-2.5 px-3 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 focus:ring-2 focus:ring-inset focus:ring-slate-900 sm:text-sm bg-white">
+                        <option value="" disabled>Selecione uma meta</option>
+                        @for (g of goalsOptions; track g.id) {
+                        <option [value]="g.id">{{ g.title }}</option>
+                        }
+                    </select>
+                </div>
+
+                <div>
+                    <label for="frequency" class="block text-sm font-medium text-slate-700 mb-1">Frequência</label>
+                    <select id="frequency" formControlName="frequency"
+                        class="block w-full rounded-lg border-0 py-2.5 px-3 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 focus:ring-2 focus:ring-inset focus:ring-slate-900 sm:text-sm bg-white">
+                        <option value="daily">Diário</option>
+                        <option value="weekly">Semanal</option>
+                        <option value="custom">Personalizado</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="mt-8 flex items-center justify-end gap-3 pt-4 border-t border-slate-100">
+                <app-button variant="secondary" type="button" (click)="close()" [disabled]="isLoading">
+                    Cancelar
+                </app-button>
+
+                <app-button variant="primary" type="submit" [disabled]="isLoading || habitForm.invalid"
+                    customClass="min-w-[120px]">
+                    @if (isLoading) {
+                    <div class="flex justify-center items-center h-5 w-5">
+                        <svg class="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
+                            </circle>
+                            <path class="opacity-75" fill="currentColor"
+                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                            </path>
+                        </svg>
+                    </div>
+                    } @else {
+                    Criar Hábito
+                    }
+                </app-button>
+            </div>
+        </form>
+    </div>
+</div>
+}

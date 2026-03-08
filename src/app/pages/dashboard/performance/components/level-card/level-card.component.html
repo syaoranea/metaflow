@@ -1,0 +1,28 @@
+<div
+    class="bg-slate-900 rounded-xl shadow-sm p-6 flex flex-col justify-center h-full text-white relative overflow-hidden">
+    <div
+        class="absolute top-0 right-0 -mr-6 -mt-6 w-24 h-24 bg-blue-500 rounded-full blur-2xl opacity-40 pointer-events-none">
+    </div>
+
+    <div class="relative z-10">
+        <div class="flex items-center justify-between mb-2">
+            <h3 class="text-sm font-medium text-slate-400 uppercase tracking-wider">Nível de Evolução</h3>
+            <span class="text-xs font-bold bg-white/10 px-2 py-1 rounded text-slate-100">Nv. {{ level }}</span>
+        </div>
+
+        <div class="text-2xl font-bold mb-6 tracking-tight text-white">
+            {{ title }}
+        </div>
+
+        <div>
+            <div class="flex justify-between text-xs font-medium text-slate-400 mb-2">
+                <span>Progresso Atual</span>
+                <span>Rumo ao Nv. {{ nextLevel }}</span>
+            </div>
+            <div class="h-1.5 w-full bg-slate-800 rounded-full overflow-hidden">
+                <div class="h-full bg-blue-400 rounded-full transition-all duration-1000 ease-out"
+                    [style.width]="(level === 5 ? 100 : progressToNext) + '%'"></div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,60 @@
+@if (data.length > 0) {
+<div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 w-full">
+    <div class="flex items-center justify-between mb-8">
+        <div>
+            <h3 class="text-base font-bold text-slate-900">Evolução Geral</h3>
+            <p class="text-sm text-slate-500 mt-1">Sua consistência contínua ao longo do tempo.</p>
+        </div>
+    </div>
+
+    <div class="relative w-full overflow-hidden pb-8">
+        <!-- Background Grid -->
+        <div class="absolute inset-0 flex flex-col justify-between pb-8 z-0 pointer-events-none">
+            <div class="w-full border-b border-dashed border-slate-200 h-0"></div>
+            <div class="w-full border-b border-dashed border-slate-200 h-0"></div>
+            <div class="w-full border-b border-dashed border-slate-200 h-0"></div>
+            <div class="w-full border-b border-solid border-slate-200 h-0"></div>
+        </div>
+
+        <!-- SVG Chart -->
+        <svg [attr.viewBox]="'0 -10 ' + width + ' ' + (height + 20)"
+            class="w-full h-[180px] overflow-visible relative z-10" preserveAspectRatio="none">
+            <defs>
+                <linearGradient id="lineTrendGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#2563eb" stop-opacity="0.2" />
+                    <stop offset="100%" stop-color="#2563eb" stop-opacity="0" />
+                </linearGradient>
+                <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+                    <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#2563eb" flood-opacity="0.3" />
+                </filter>
+            </defs>
+
+            <path [attr.d]="fillPathD" fill="url(#lineTrendGradient)" class="transition-all duration-700 ease-in-out">
+            </path>
+
+            <path [attr.d]="pathD" fill="none" stroke="#2563eb" stroke-width="3" stroke-linejoin="round"
+                stroke-linecap="round" filter="url(#glow)" class="transition-all duration-700 ease-in-out"></path>
+
+            @for (val of data; track $index) {
+            @if (shouldShowDataPoint($index)) {
+            <circle [attr.cx]="getPointX($index)" [attr.cy]="getPointY(val)" r="4" fill="#ffffff" stroke="#2563eb"
+                stroke-width="2" class="transition-all duration-700 ease-in-out hover:r-6 cursor-pointer">
+                <title>{{ val }}% em {{ labels[$index] }}</title>
+            </circle>
+            }
+            }
+        </svg>
+
+        <!-- Labels -->
+        <div class="absolute bottom-0 w-full flex justify-between text-xs font-medium text-slate-400 px-1">
+            @for (label of labels; track $index) {
+            @if (showLabelsIndices.includes($index)) {
+            <span>{{ label }}</span>
+            } @else {
+            <span></span>
+            }
+            }
+        </div>
+    </div>
+</div>
+}
