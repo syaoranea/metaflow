@@ -37,10 +37,6 @@ jobs:
         aws-region: ${{ env.AWS_REGION }}
 
     - name: Sync files to S3 bucket
-      run: aws s3 sync dist/meta-flow-ng/browser s3://${{ env.S3_BUCKET }} --delete
+      run: aws s3 sync dist/meta-flow-ng/browser s3://${{ env.AWS_S3_BUCKET }} --delete
 
-    - name: Invalidate CloudFront (Optional)
-      run: |
-        if [ "${{ env.CLOUDFRONT_DIST_ID }}" != "your-cloudfront-distribution-id" ]; then
-          aws cloudfront create-invalidation --distribution-id ${{ env.CLOUDFRONT_DIST_ID }} --paths "/*"
-        fi
+
