@@ -7,8 +7,7 @@ on:
 
 env:
   AWS_REGION: us-east-1
-  S3_BUCKET: your-s3-bucket-name
-  CLOUDFRONT_DIST_ID: your-cloudfront-distribution-id
+  S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
 
 jobs:
   deploy:
