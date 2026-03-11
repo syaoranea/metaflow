@@ -1,13 +1,13 @@
 import { Component, inject } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../../services/auth.service';
 import { ButtonComponent } from '../../../components/ui/button/button.component';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterLink, ButtonComponent],
+  imports: [RouterLink, ButtonComponent, ReactiveFormsModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
@@ -16,34 +16,35 @@ export class LoginComponent {
   private authService = inject(AuthService);
   private router = inject(Router);
 
-  loginForm: FormGroup = this.fb.group({
-    email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(6)]]
-  });
-
+  loginForm: FormGroup;
   isLoading = false;
   errorMessage = '';
 
-  async onSubmit() {
-    if (this.loginForm.invalid) {
-      this.errorMessage = 'Preencha todos os campos corretamente.';
-      return;
-    }
+  constructor() {
+    this.loginForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]]
+    });
+  }
 
-    this.errorMessage = '';
+  async onSubmit() {
+    if (this.loginForm.invalid) return;
+
     this.isLoading = true;
+    this.errorMessage = '';
+
+    const { email, password } = this.loginForm.value;
 
     try {
-      const { email } = this.loginForm.value;
-      const res = await this.authService.login(email);
+      const res = await this.authService.login(email, password);
 
       if (res.success) {
         this.router.navigate(['/dashboard']);
       } else {
-        this.errorMessage = res.error || 'Erro no login.';
+        this.errorMessage = res.error || 'Erro ao entrar. Verifique suas credenciais.';
       }
-    } catch (err) {
-      this.errorMessage = 'Ocorreu um erro ao processar sua requisição.';
+    } catch (error) {
+      this.errorMessage = 'Ocorreu um erro inesperado. Tente novamente.';
     } finally {
       this.isLoading = false;
     }

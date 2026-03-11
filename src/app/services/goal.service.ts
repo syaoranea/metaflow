@@ -1,5 +1,7 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Injectable, inject } from '@angular/core';
+import { BehaviorSubject, Observable, firstValueFrom } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 
 export interface Goal {
   id: string;
@@ -18,58 +20,56 @@ export interface Goal {
   providedIn: 'root'
 })
 export class GoalService {
-  private mockGoals: Goal[] = [
-    {
-      id: "goal-1",
-      userId: "mock-user-123",
-      title: "Organizar minhas finanças",
-      description: "Ter controle total sobre meus gastos e começar a investir",
-      targetValue: 10000,
-      progress: 2500,
-      status: "ACTIVE",
-      createdAt: new Date().toISOString()
-    },
-    {
-      id: "goal-2",
-      userId: "mock-user-123",
-      title: "Ler 12 livros no ano",
-      description: "Desenvolver o hábito da leitura diária",
-      targetValue: 12,
-      progress: 3,
-      status: "ACTIVE",
-      createdAt: new Date().toISOString()
-    }
-  ];
+  private http = inject(HttpClient);
+  private apiUrl = `${environment.apiUrl}/api/goals`; // Adjust base path as needed per BFF docs
 
-  private goalsSubject = new BehaviorSubject<Goal[]>(this.mockGoals);
+  private goalsSubject = new BehaviorSubject<Goal[]>([]);
   goals$ = this.goalsSubject.asObservable();
 
   constructor() { }
 
+  /**
+   * Fetches the goals from the API and updates local state.
+   */
   async getGoals(): Promise<Goal[]> {
-    return this.mockGoals;
+    try {
+      const goals = await firstValueFrom(this.http.get<Goal[]>(this.apiUrl));
+      this.goalsSubject.next(goals);
+      return goals;
+    } catch (error) {
+      console.error('Error fetching goals from API', error);
+      return [];
+    }
   }
 
+  /**
+   * Creates a new goal via the API.
+   */
   async createGoal(data: { title: string; description?: string; targetValue: number }): Promise<{ success: boolean, goal?: Goal }> {
-    const newGoal: Goal = {
-      id: `goal-${Date.now()}`,
-      userId: "mock-user-123",
-      title: data.title,
-      description: data.description || null,
-      targetValue: data.targetValue,
-      progress: 0,
-      status: 'ACTIVE',
-      createdAt: new Date().toISOString()
-    };
-
-    this.mockGoals = [...this.mockGoals, newGoal];
-    this.goalsSubject.next(this.mockGoals);
-    return { success: true, goal: newGoal };
+    try {
+      const newGoal = await firstValueFrom(this.http.post<Goal>(this.apiUrl, data));
+      const currentGoals = this.goalsSubject.value;
+      this.goalsSubject.next([...currentGoals, newGoal]);
+      return { success: true, goal: newGoal };
+    } catch (error) {
+      console.error('Error creating goal', error);
+      return { success: false };
+    }
   }
 
+  /**
+   * Deletes a goal via the API.
+   */
   async deleteGoal(goalId: string): Promise<{ success: boolean, error?: string }> {
-    this.mockGoals = this.mockGoals.filter(g => g.id !== goalId);
-    this.goalsSubject.next(this.mockGoals);
-    return { success: true };
+    try {
+      await firstValueFrom(this.http.delete(`${this.apiUrl}/${goalId}`));
+      const updatedGoals = this.goalsSubject.value.filter(g => g.id !== goalId);
+      this.goalsSubject.next(updatedGoals);
+      return { success: true };
+    } catch (error) {
+      console.error('Error deleting goal', error);
+      return { success: false, error: 'Failed to delete goal' };
+    }
   }
 }
+

@@ -106,8 +106,8 @@ export class RegisterComponent {
     this.errorMessage = '';
 
     try {
-      const { name, email, goal } = this.registerForm.value;
-      const res = await this.authService.register({ name, email, goal });
+      const { name, email, goal, password } = this.registerForm.value;
+      const res = await this.authService.register({ name, email, goal, password });
 
       setTimeout(() => {
         this.isLoading = false;

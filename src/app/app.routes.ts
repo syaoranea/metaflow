@@ -8,6 +8,7 @@ import { PerformanceComponent } from './pages/dashboard/performance/performance.
 import { ReportsComponent } from './pages/dashboard/reports/reports.component';
 import { SettingsComponent } from './pages/dashboard/settings/settings.component';
 import { LandingComponent } from './pages/landing/landing.component';
+import { authGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
     { path: '', component: LandingComponent, pathMatch: 'full' },
@@ -16,6 +17,7 @@ export const routes: Routes = [
     {
         path: 'dashboard',
         component: ShellComponent,
+        canActivate: [authGuard],
         children: [
             { path: '', redirectTo: 'habits', pathMatch: 'full' },
             { path: 'habits', component: HabitsComponent },
