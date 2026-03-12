@@ -5,6 +5,7 @@ import { environment } from '../../environments/environment';
 
 export interface Goal {
   id: string;
+  sk: string;
   userId: string;
   title: string;
   description: string | null;
@@ -45,9 +46,13 @@ export class GoalService {
   /**
    * Creates a new goal via the API.
    */
-  async createGoal(data: { title: string; description?: string; targetValue: number }): Promise<{ success: boolean, goal?: Goal }> {
+  async createGoal(data: { title: string; description?: string; targetValue: number; email?: string }): Promise<{ success: boolean, goal?: Goal }> {
     try {
-      const newGoal = await firstValueFrom(this.http.post<Goal>(this.apiUrl, data));
+      // Gerar SK no front usando UUID
+      const sk = crypto.randomUUID();
+      const payload = { ...data, sk };
+
+      const newGoal = await firstValueFrom(this.http.post<Goal>(this.apiUrl, payload));
       const currentGoals = this.goalsSubject.value;
       this.goalsSubject.next([...currentGoals, newGoal]);
       return { success: true, goal: newGoal };
@@ -58,12 +63,28 @@ export class GoalService {
   }
 
   /**
+   * Updates an existing goal via the API.
+   */
+  async updateGoal(goalIdOrSk: string, data: Partial<Goal>): Promise<{ success: boolean, goal?: Goal }> {
+    try {
+      // Garantir que estamos enviando para o endpoint usando o ID/SK mapeado
+      const updatedGoal = await firstValueFrom(this.http.patch<Goal>(`${this.apiUrl}/${goalIdOrSk}`, data));
+      const currentGoals = this.goalsSubject.value;
+      this.goalsSubject.next(currentGoals.map(g => (g.id === goalIdOrSk || g.sk === goalIdOrSk) ? updatedGoal : g));
+      return { success: true, goal: updatedGoal };
+    } catch (error) {
+      console.error('Error updating goal', error);
+      return { success: false };
+    }
+  }
+
+  /**
    * Deletes a goal via the API.
    */
-  async deleteGoal(goalId: string): Promise<{ success: boolean, error?: string }> {
+  async deleteGoal(goalIdOrSk: string): Promise<{ success: boolean, error?: string }> {
     try {
-      await firstValueFrom(this.http.delete(`${this.apiUrl}/${goalId}`));
-      const updatedGoals = this.goalsSubject.value.filter(g => g.id !== goalId);
+      await firstValueFrom(this.http.delete(`${this.apiUrl}/${goalIdOrSk}`));
+      const updatedGoals = this.goalsSubject.value.filter(g => g.id !== goalIdOrSk && g.sk !== goalIdOrSk);
       this.goalsSubject.next(updatedGoals);
       return { success: true };
     } catch (error) {

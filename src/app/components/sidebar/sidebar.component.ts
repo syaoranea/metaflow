@@ -14,8 +14,12 @@ export class SidebarComponent {
 
   links = [
     {
-      name: "Dashboard", href: "/dashboard",
+      name: "Dashboard", href: "/dashboard/overview",
       icon: `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg>`
+    },
+    {
+      name: "Admin", href: "/dashboard/admin",
+      icon: `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>`
     },
     {
       name: "Metas", href: "/dashboard/goals",

@@ -43,12 +43,15 @@ export class AuthService {
   async getUser(): Promise<User | null> {
     if (!this.isLoggedIn()) return null;
     try {
-      const user = await firstValueFrom(this.http.get<User>(`${environment.apiUrl}/api/users/me`));
+      console.log('Buscando dados do usuário no BFF...');
+      const user = await firstValueFrom(this.http.get<User>(`${environment.apiUrl}/api/auth/me`));
+      console.log('Usuário retornado com sucesso:', user);
       this.currentUserSubject.next(user);
       return user;
     } catch (error) {
-      console.error('Erro ao buscar o usuário na API', error);
-      this.logout();
+      console.error('Erro ao buscar o usuário na API. Verifique se o token é válido ou se a BFF está operante.', error);
+      // Não chamamos logout() automaticamente aqui para evitar loops de redirecionamento.
+      // Apenas retornamos null e deixamos o Guard ou Componente decidir.
       return null;
     }
   }
@@ -57,12 +60,18 @@ export class AuthService {
     try {
       if (!email || !password) return { success: false, error: 'Email e senha requeridos.' };
 
-      const response = await firstValueFrom(this.http.post<{ accessToken: string, user: User }>(`${this.apiUrl}/login`, { email, password }));
+      const response = await firstValueFrom(this.http.post<any>(`${this.apiUrl}/login`, { email, password }));
 
-      localStorage.setItem('access_token', response.accessToken);
-      this.currentUserSubject.next(response.user);
+      const token = response.accessToken || response.token || response.access_token;
 
-      return { success: true };
+      if (token && token !== 'undefined' && token !== 'null') {
+        localStorage.setItem('access_token', token);
+        this.currentUserSubject.next(response.user);
+        return { success: true };
+      } else {
+        console.error('BFF nao retornou um token valido:', response);
+        return { success: false, error: 'Erro ao processar autenticação (Token ausente).' };
+      }
     } catch (error: any) {
       const msg = error.error?.message || 'Erro de autenticação no servidor.';
       return { success: false, error: msg };
