@@ -69,7 +69,7 @@ export class HabitsComponent implements OnInit {
     });
 
     this.goalService.goals$.subscribe(goals => {
-      this.goalsOptions.set(goals.map(g => ({ id: g.id, title: g.title })));
+      this.goalsOptions.set(goals.map(g => ({ id: g.sk, title: g.title })));
     });
   }
 

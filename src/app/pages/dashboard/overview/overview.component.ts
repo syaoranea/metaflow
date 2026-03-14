@@ -38,7 +38,7 @@ export class OverviewComponent implements OnInit {
         this.recentHabits.set(habits.slice(0, 3));
 
         const goals = await this.goalService.getGoals();
-        this.primaryGoals.set(goals.filter((g: Goal) => g.status === 'ACTIVE').slice(0, 2));
+        this.primaryGoals.set(goals.slice(0, 2));
 
         this.calculateStats(habits, goals);
     }
@@ -49,9 +49,8 @@ export class OverviewComponent implements OnInit {
 
         const habitsCompletion = totalHabits > 0 ? Math.round((completedHabits / totalHabits) * 100) : 0;
 
-        const activeGoals = goals.filter(g => g.status === 'ACTIVE');
-        const totalProgress = activeGoals.reduce((acc, g) => acc + (g.progress / g.targetValue), 0);
-        const goalsProgress = activeGoals.length > 0 ? Math.round((totalProgress / activeGoals.length) * 100) : 0;
+        const totalProgress = goals.reduce((acc, g) => acc + (g.progress / 100), 0);
+        const goalsProgress = goals.length > 0 ? Math.round((totalProgress / goals.length) * 100) : 0;
 
         this.stats.set({
             habitsCompletion,

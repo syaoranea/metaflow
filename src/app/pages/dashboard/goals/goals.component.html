@@ -1,16 +1,5 @@
 <div
     class="flex-1 flex flex-col h-full bg-slate-50 selection:bg-emerald-100 selection:text-emerald-900 overflow-x-hidden">
-    <div
-        class="sticky top-0 z-30 flex h-16 shrink-0 items-center justify-between border-b border-slate-200 bg-white/80 backdrop-blur-md px-6 shadow-sm">
-        <div class="flex flex-1 gap-x-4 lg:gap-x-6">
-            <div class="flex justify-end flex-1">
-                <div class="flex items-center gap-x-4 lg:gap-x-6">
-                    <span class="text-sm font-medium text-slate-700">Olá, Eduardo</span>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <main class="flex-1 overflow-y-auto p-6 md:p-8">
         <div class="mx-auto max-w-6xl w-full flex flex-col min-h-full">
             <!-- Goals Header -->
@@ -62,7 +51,7 @@
                 } @else {
                 <div
                     class="grid grid-cols-1 md:grid-cols-2 gap-6 pb-12 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                    @for (goal of sortedGoals(); track goal.id) {
+                    @for (goal of sortedGoals(); track goal.sk) {
                     <app-goal-card [goal]="goal" (onViewDetails)="handleViewDetails($event)"></app-goal-card>
                     }
                 </div>
@@ -72,6 +61,13 @@
         </div>
     </main>
 
-    <app-create-goal-modal [isOpen]="isModalOpen()" (closeModal)="closeModal()" (onSave)="handleCreateGoal($event)">
+    <app-create-goal-modal [isOpen]="isModalOpen()" [goalToEdit]="selectedGoal()" (closeModal)="closeModal()"
+        (onSave)="handleSaveGoal($event)" (onDelete)="handleDeleteGoal($event)">
     </app-create-goal-modal>
+
+    <app-confirmation-modal [isOpen]="isDeleteModalOpen()" title="Remover Meta"
+        message="Tem certeza que deseja remover esta meta? Esta ação não pode ser desfeita." confirmText="Sim, Remover"
+        cancelText="Cancelar" variant="danger" [isLoading]="isLoading()" (confirm)="onConfirmDelete()"
+        (cancel)="onCancelDelete()">
+    </app-confirmation-modal>
 </div>

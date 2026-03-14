@@ -1,36 +1,55 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { GoalService, Goal } from '../../../services/goal.service';
+import { Goal } from '../../../services/goal.service';
+import { SuggestionService } from '../../../services/suggestion.service';
 import { ButtonComponent } from '../../../components/ui/button/button.component';
+import { ConfirmationModalComponent } from '../../../shared/components/modal/confirmation-modal/confirmation-modal.component';
 
 import { AuthService } from '../../../services/auth.service';
 
 @Component({
     selector: 'app-admin',
     standalone: true,
-    imports: [CommonModule, ReactiveFormsModule, ButtonComponent],
+    imports: [CommonModule, ReactiveFormsModule, ButtonComponent, ConfirmationModalComponent],
     templateUrl: './admin.component.html',
     styleUrl: './admin.component.scss'
 })
 export class AdminComponent implements OnInit {
-    private goalService = inject(GoalService);
+    private suggestionService = inject(SuggestionService);
     private authService = inject(AuthService);
     private fb = inject(FormBuilder);
 
     goals = signal<Goal[]>([]);
     isLoading = signal(false);
     isModalOpen = signal(false);
+    isDeleteModalOpen = signal(false);
     editingGoalSk = signal<string | null>(null);
+    goalToDeleteSk = signal<string | null>(null);
 
     goalForm: FormGroup;
+
+    categories = [
+        'Finanças',
+        'Saúde & Bem-estar',
+        'Carreira & Profissional',
+        'Educação & Estudos',
+        'Relacionamentos',
+        'Lazer & Viagens',
+        'Desenvolvimento Pessoal',
+        'Espiritualidade',
+        'Projetos Criativos',
+        'Contribuição & Social'
+    ];
 
     constructor() {
         this.goalForm = this.fb.group({
             title: ['', [Validators.required]],
             description: [''],
-            targetValue: [0, [Validators.required, Validators.min(1)]],
-            status: ['ACTIVE']
+            category: ['Finanças', [Validators.required]],
+            deadline: [''],
+            status: ['ACTIVE'],
+            progress: [0, [Validators.required, Validators.min(0), Validators.max(100)]]
         });
     }
 
@@ -40,7 +59,7 @@ export class AdminComponent implements OnInit {
 
     async loadGoals() {
         this.isLoading.set(true);
-        const gls = await this.goalService.getGoals();
+        const gls = await this.suggestionService.getSuggestions();
         this.goals.set(gls);
         this.isLoading.set(false);
     }
@@ -50,13 +69,22 @@ export class AdminComponent implements OnInit {
             this.editingGoalSk.set(goal.sk); // Usar SK como identificador
             this.goalForm.patchValue({
                 title: goal.title,
-                description: goal.description,
-                targetValue: goal.targetValue,
-                status: goal.status
+                description: goal.description || '',
+                category: goal.category || 'Finanças',
+                deadline: goal.deadline || '',
+                status: goal.status || 'ACTIVE',
+                progress: goal.progress
             });
         } else {
             this.editingGoalSk.set(null);
-            this.goalForm.reset({ status: 'ACTIVE', targetValue: 0 });
+            this.goalForm.reset({
+                title: '',
+                description: '',
+                category: 'Finanças',
+                deadline: '',
+                status: 'ACTIVE',
+                progress: 0
+            });
         }
         this.isModalOpen.set(true);
     }
@@ -77,12 +105,12 @@ export class AdminComponent implements OnInit {
         if (this.editingGoalSk()) {
             // Se for edição, precisamos enviar o SK no payload também se o BFF exigir no corpo
             const dataWithSk = { ...formValue, sk: this.editingGoalSk() };
-            result = await this.goalService.updateGoal(this.editingGoalSk()!, dataWithSk);
+            result = await this.suggestionService.updateSuggestion(this.editingGoalSk()!, dataWithSk);
         } else {
             // Pegar o e-mail do usuário logado
             const user = await this.authService.getUser();
             const dataWithEmail = { ...formValue, email: user?.email };
-            result = await this.goalService.createGoal(dataWithEmail);
+            result = await this.suggestionService.createSuggestion(dataWithEmail);
         }
 
         if (result.success) {
@@ -92,14 +120,32 @@ export class AdminComponent implements OnInit {
         this.isLoading.set(false);
     }
 
-    async deleteGoal(sk: string) {
-        if (confirm('Tem certeza que deseja excluir esta meta?')) {
-            this.isLoading.set(true);
-            const res = await this.goalService.deleteGoal(sk);
+    deleteGoal(sk: string) {
+        this.goalToDeleteSk.set(sk);
+        this.isDeleteModalOpen.set(true);
+    }
+
+    async onConfirmDelete() {
+        const sk = this.goalToDeleteSk();
+        if (!sk) return;
+
+        this.isLoading.set(true);
+        try {
+            const res = await this.suggestionService.deleteSuggestion(sk);
             if (res.success) {
                 await this.loadGoals();
+                this.isDeleteModalOpen.set(false);
+                this.goalToDeleteSk.set(null);
             }
+        } catch (err) {
+            alert("Erro ao excluir meta: " + err);
+        } finally {
             this.isLoading.set(false);
         }
+    }
+
+    onCancelDelete() {
+        this.isDeleteModalOpen.set(false);
+        this.goalToDeleteSk.set(null);
     }
 }

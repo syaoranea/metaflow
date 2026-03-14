@@ -89,9 +89,26 @@ export class AuthService {
     }
   }
 
-  logout(): void {
-    localStorage.removeItem('access_token');
-    this.currentUserSubject.next(null);
-    this.router.navigate(['/login']);
+  async updateUser(data: Partial<User>): Promise<{ success: boolean, error?: string }> {
+    try {
+      const updatedUser = await firstValueFrom(this.http.patch<User>(`${environment.apiUrl}/api/auth/me`, data));
+      this.currentUserSubject.next(updatedUser);
+      return { success: true };
+    } catch (error: any) {
+      const msg = error.error?.message || 'Erro ao atualizar usuário no servidor.';
+      return { success: false, error: msg };
+    }
+  }
+
+  async logout(): Promise<void> {
+    try {
+      await firstValueFrom(this.http.post(`${this.apiUrl}/logout`, {}));
+    } catch (error) {
+      console.error('Erro ao fazer logout no servidor:', error);
+    } finally {
+      localStorage.removeItem('access_token');
+      this.currentUserSubject.next(null);
+      this.router.navigate(['/login']);
+    }
   }
 }

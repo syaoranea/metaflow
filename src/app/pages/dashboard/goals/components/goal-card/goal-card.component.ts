@@ -16,6 +16,6 @@ export class GoalCardComponent {
   readonly Math = Math;
 
   viewDetails() {
-    this.onViewDetails.emit(this.goal.id);
+    this.onViewDetails.emit(this.goal.sk);
   }
 }

@@ -1,16 +1,5 @@
 <div
     class="flex-1 flex flex-col h-full bg-slate-50 selection:bg-emerald-100 selection:text-emerald-900 overflow-x-hidden relative">
-    <div
-        class="sticky top-0 z-30 flex h-16 shrink-0 items-center justify-between border-b border-slate-200 bg-white/80 backdrop-blur-md px-6 shadow-sm">
-        <div class="flex flex-1 gap-x-4 lg:gap-x-6">
-            <div class="flex justify-end flex-1">
-                <div class="flex items-center gap-x-4 lg:gap-x-6">
-                    <span class="text-sm font-medium text-slate-700">Olá, {{ userName }}</span>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <main class="flex-1 overflow-y-auto p-6 md:p-8 pb-32">
         @if (!loaded) {
         <div class="flex-1 flex items-center justify-center">
@@ -54,15 +43,32 @@
                                 placeholder="Ex: Engenheiro de Software" />
                         </div>
                     </div>
-                    <div class="mt-6 flex items-center gap-4">
+                    <div class="mt-6 flex flex-wrap items-center gap-4">
                         <div
                             class="h-16 w-16 bg-slate-100 rounded-full flex items-center justify-center border border-slate-200 text-slate-400 font-bold text-xl uppercase">
                             {{ userName.charAt(0) }}
                         </div>
-                        <button type="button"
-                            class="text-sm font-semibold text-indigo-600 hover:text-indigo-500 transition-colors">
-                            Alterar foto de perfil
-                        </button>
+                        <div class="flex flex-col gap-1">
+                            <button type="button"
+                                class="text-sm font-semibold text-indigo-600 hover:text-indigo-500 transition-colors text-left">
+                                Alterar foto de perfil
+                            </button>
+                            <button type="button" (click)="updateProfile()" [disabled]="isSavingProfile"
+                                class="mt-2 inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-bold rounded-lg shadow-sm text-white bg-slate-900 hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500 transition-all min-w-[140px]">
+                                @if (isSavingProfile) {
+                                <svg class="animate-spin h-4 w-4 text-white mr-2" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                        stroke-width="4" fill="none"></circle>
+                                    <path class="opacity-75" fill="currentColor"
+                                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                    </path>
+                                </svg>
+                                Atualizando...
+                                } @else {
+                                Atualizar Dados
+                                }
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -261,3 +267,43 @@
     </div>
     }
 </div>
+
+<!-- Feedback Modal -->
+@if (showFeedbackModal()) {
+<div class="fixed inset-0 z-[100] flex items-center justify-center p-4 animate-in fade-in duration-300">
+    <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm" (click)="closeFeedbackModal()"></div>
+
+    <div
+        class="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-sm relative z-10 overflow-hidden animate-in zoom-in-95 duration-300">
+        <div class="p-8 flex flex-col items-center text-center">
+            @if (feedbackType() === 'success') {
+            <div class="h-16 w-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mb-4">
+                <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+            </div>
+            } @else {
+            <div class="h-16 w-16 bg-rose-100 text-rose-600 rounded-full flex items-center justify-center mb-4">
+                <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </div>
+            }
+
+            <h3 class="text-xl font-bold text-slate-900 mb-2">
+                {{ feedbackType() === 'success' ? 'Sucesso!' : 'Ops! Algo deu errado' }}
+            </h3>
+            <p class="text-slate-500 mb-8 leading-relaxed">
+                {{ feedbackMessage() }}
+            </p>
+
+            <button (click)="closeFeedbackModal()"
+                class="w-full py-3 px-6 rounded-xl font-bold transition-all shadow-md hover:shadow-lg active:scale-95"
+                [ngClass]="feedbackType() === 'success' ? 'bg-indigo-600 text-white hover:bg-indigo-700' : 'bg-slate-900 text-white hover:bg-slate-800'">
+                Entendido
+            </button>
+        </div>
+    </div>
+</div>
+}
