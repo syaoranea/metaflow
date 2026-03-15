@@ -15,6 +15,8 @@ export interface Goal {
   deadline?: string; // ISO String or YYYY-MM-DD
   progress: number;
   created_at: string; // YYYY-MM-DD
+  frequency?: number;
+  auto?: boolean;
 }
 
 @Injectable({
@@ -47,7 +49,7 @@ export class GoalService {
   /**
    * Creates a new goal via the API.
    */
-  async createGoal(data: { title: string; progress?: number; category?: string; deadline?: string; description?: string }): Promise<{ success: boolean, goal?: Goal }> {
+  async createGoal(data: { title: string; progress?: number; category?: string; deadline?: string; description?: string; auto?: boolean }): Promise<{ success: boolean, goal?: Goal }> {
     try {
       const user = await this.authService.getUser();
       if (!user) throw new Error('User not authenticated');
@@ -65,7 +67,8 @@ export class GoalService {
         category: data.category,
         deadline: data.deadline,
         progress: data.progress ?? 0,
-        created_at
+        created_at,
+        auto: data.auto ?? false
       };
 
       const newGoal = await firstValueFrom(this.http.post<Goal>(this.apiUrl, payload));
@@ -110,6 +113,91 @@ export class GoalService {
     } catch (error) {
       console.error('Error deleting goal', error);
       return { success: false, error: 'Failed to delete goal' };
+    }
+  }
+
+  /**
+   * Fetches subgoals (habits) for a specific parent goal.
+   */
+  async getSubgoals(goalSk: string): Promise<Goal[]> {
+    try {
+      const encodedSk = encodeURIComponent(goalSk);
+      const subgoals = await firstValueFrom(this.http.get<Goal[]>(`${this.apiUrl}/${encodedSk}/subgoals`));
+      return subgoals;
+    } catch (error) {
+      console.error('Error fetching subgoals from API', error);
+      return [];
+    }
+  }
+  /**
+   * Creates a new habit (subgoal) linked to a parent goal.
+   */
+  async createHabit(parentSk: string, data: { title: string; frequency: number; auto?: boolean }): Promise<{ success: boolean, goal?: Goal }> {
+    try {
+      const pk = parentSk;
+      const sk = `HABIT#${crypto.randomUUID()}`;
+      const created_at = new Date().toISOString().split('T')[0];
+
+      const payload: any = {
+        pk,
+        sk,
+        type: 'goal',
+        title: data.title,
+        status: 'ACTIVE',
+        progress: 0,
+        created_at,
+        frequency: data.frequency,
+        auto: data.auto ?? false
+      };
+
+      const newHabit = await firstValueFrom(this.http.post<Goal>(this.apiUrl, payload));
+      return { success: true, goal: newHabit };
+    } catch (error) {
+      console.error('Error creating habit subgoal', error);
+      return { success: false };
+    }
+  }
+
+  /**
+   * Registers progress for a subgoal (habit).
+   */
+  async registerProgress(goalId: string, subgoalId: string, xp: number = 10): Promise<{ success: boolean, error?: string }> {
+    try {
+      const payload = { goalId, subgoalId, xp };
+      await firstValueFrom(this.http.post(`${this.apiUrl}/progress`, payload));
+      return { success: true };
+    } catch (error) {
+      console.error('Error registering subgoal progress', error);
+      return { success: false, error: 'Failed to register progress' };
+    }
+  }
+
+  /**
+   * Updates a subgoal (habit).
+   */
+  async updateSubgoal(sk: string, data: Partial<Goal>): Promise<{ success: boolean, goal?: Goal }> {
+    try {
+      const encodedSk = encodeURIComponent(sk);
+      const updated = await firstValueFrom(this.http.patch<Goal>(`${this.apiUrl}/${encodedSk}`, data));
+      return { success: true, goal: updated };
+    } catch (error) {
+      console.error('Error updating subgoal', error);
+      return { success: false };
+    }
+  }
+
+  /**
+   * Deletes a subgoal (habit).
+   */
+  async deleteSubgoal(sk: string, parentPk: string): Promise<{ success: boolean, error?: string }> {
+    try {
+      const encodedSk = encodeURIComponent(sk);
+      const encodedPk = encodeURIComponent(parentPk);
+      await firstValueFrom(this.http.delete(`${this.apiUrl}/${encodedSk}?pk=${encodedPk}`));
+      return { success: true };
+    } catch (error) {
+      console.error('Error deleting subgoal', error);
+      return { success: false, error: 'Failed to delete subgoal' };
     }
   }
 }

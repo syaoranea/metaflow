@@ -1,26 +1,34 @@
-<div (click)="viewDetails()"
+<div (click)="onEdit.emit(goal.sk)"
     class="group flex flex-col h-full rounded-2xl bg-white p-6 shadow-sm transition-all duration-300 hover:shadow-md border border-slate-200 cursor-pointer hover:border-slate-300">
+    <!-- ... (rest of card content unchanged) -->
     <div class="flex items-start justify-between gap-4 mb-4">
         <div class="flex-1 min-w-0">
             <h3 class="text-lg font-bold text-slate-900 truncate group-hover:text-emerald-600 transition-colors"
-                [title]="goal?.title">
-                {{ goal?.title }}
+                [title]="goal.title">
+                {{ goal.title }}
             </h3>
         </div>
+        @if (isFinancesGoal) {
+        <button (click)="openFinanceApp($event)"
+            class="shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-600 text-white text-xs font-bold shadow-sm hover:bg-emerald-700 transition-all hover:scale-105 active:scale-95">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+            </svg>
+            App Finanças
+        </button>
+        }
     </div>
 
-    <!-- Spacing to push bottom content down -->
     <div class="flex-1 mb-6"></div>
 
     <div class="mb-6">
-        <!-- Inline ProgressBar implementation -->
         <div class="flex items-center justify-between mb-2">
             <span class="text-sm font-semibold text-slate-700">Progresso</span>
-            <span class="text-sm font-bold text-slate-900">{{ Math.round(goal?.progress || 0) }}%</span>
+            <span class="text-sm font-bold text-slate-900">{{ Math.round(goal.progress || 0) }}%</span>
         </div>
         <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
             <div class="bg-slate-900 h-2.5 rounded-full transition-all duration-500 ease-out"
-                [style.width]="(goal?.progress || 0) + '%'">
+                [style.width]="(goal.progress || 0) + '%'">
             </div>
         </div>
     </div>
@@ -34,11 +42,16 @@
                 <line x1="8" y1="2" x2="8" y2="6"></line>
                 <line x1="3" y1="10" x2="21" y2="10"></line>
             </svg>
-            {{ goal?.created_at | date:'shortDate' }}
+            @if (goal.deadline) {
+            Prazo: {{ goal.deadline | date:'shortDate' }}
+            } @else {
+            {{ goal.created_at | date:'shortDate' }}
+            }
         </div>
 
-        <div class="text-sm font-semibold text-slate-400 group-hover:text-emerald-600 transition-colors">
-            Editar →
+        <div (click)="viewDetails($event)"
+            class="text-sm font-semibold text-slate-400 hover:text-emerald-600 transition-colors px-2 py-1 rounded-lg hover:bg-emerald-50">
+            Ver detalhes →
         </div>
     </div>
 </div>

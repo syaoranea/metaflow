@@ -1,5 +1,6 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { Goal } from '../../../../../services/goal.service';
 
 @Component({
@@ -12,10 +13,27 @@ import { Goal } from '../../../../../services/goal.service';
 export class GoalCardComponent {
   @Input() goal!: Goal;
   @Output() onViewDetails = new EventEmitter<string>();
+  @Output() onEdit = new EventEmitter<string>();
+
+  private router = inject(Router);
 
   readonly Math = Math;
 
-  viewDetails() {
+  get isFinancesGoal() {
+    return this.goal.title === 'Organizar minhas finanças';
+  }
+
+  viewDetails(event?: Event) {
+    if (event) {
+      event.stopPropagation();
+    }
+    this.router.navigate(['/dashboard/habits'], { queryParams: { goalId: this.goal.sk } });
     this.onViewDetails.emit(this.goal.sk);
+  }
+
+  openFinanceApp(event: Event) {
+    event.stopPropagation();
+    // Assuming a placeholder URL for now, will ask user for the real one
+    window.open('https://financas-app.metasflow.com', '_blank');
   }
 }

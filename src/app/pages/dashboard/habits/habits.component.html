@@ -3,12 +3,30 @@
     <main class="flex-1 overflow-y-auto p-6 md:p-8">
         <div class="mx-auto max-w-6xl w-full flex flex-col min-h-full pb-12">
             <!-- Habits Header -->
+            <!-- Back to Goals (if goal specific) -->
+            @if (goalId()) {
+            <button routerLink="/dashboard/goals"
+                class="inline-flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors mb-4 group">
+                <svg class="w-4 h-4 transition-transform group-hover:-translate-x-1" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                Voltar para Minhas Metas
+            </button>
+            }
+
             <div
                 class="animate-in fade-in slide-in-from-bottom-4 duration-500 flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
                 <div>
-                    <h1 class="text-3xl font-bold tracking-tight text-slate-900 mb-2">Hábitos Diários</h1>
-                    <p class="text-slate-500 max-w-2xl">Mantenha a consistência. A disciplina diária é a ponte entre
-                        seus objetivos e suas realizações.</p>
+                    <h1 class="text-3xl font-bold tracking-tight text-slate-900 mb-2">
+                        {{ parentGoal() ? parentGoal()?.title : 'Hábitos Diários' }}
+                    </h1>
+                    <p class="text-slate-500 max-w-2xl">
+                        {{ parentGoal() ? (parentGoal()?.description || 'Hábitos e sub-metas vinculados a este
+                        objetivo.') : 'Mantenha a consistência. A disciplina diária é a ponte entre seus objetivos e
+                        suas realizações.' }}
+                    </p>
                 </div>
                 <button (click)="openModal()"
                     class="inline-flex items-center justify-center gap-2 rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-slate-800 transition-colors shrink-0">
@@ -66,7 +84,33 @@
 
             <!-- List Area -->
             <div class="flex-1 mt-4">
-                @if (parsedHabits().length === 0) {
+                @if (isLoadingHabits()) {
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-in fade-in duration-500">
+                    @for (item of [1,2,3]; track item) {
+                    <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm h-full flex flex-col gap-4">
+                        <div class="flex items-start justify-between gap-4">
+                            <app-skeleton width="70%" height="1.5rem"></app-skeleton>
+                            <app-skeleton width="20%" height="1.5rem"></app-skeleton>
+                        </div>
+                        <app-skeleton width="50%" height="1rem"></app-skeleton>
+                        <div class="grid grid-cols-2 gap-4 mt-4">
+                            <div>
+                                <app-skeleton width="40%" height="0.75rem" customClass="mb-2"></app-skeleton>
+                                <app-skeleton width="60%" height="1.5rem"></app-skeleton>
+                            </div>
+                            <div>
+                                <app-skeleton width="40%" height="0.75rem" customClass="mb-2"></app-skeleton>
+                                <app-skeleton width="60%" height="1.5rem"></app-skeleton>
+                            </div>
+                        </div>
+                        <app-skeleton height="0.75rem" customClass="mt-2"></app-skeleton>
+                        <div class="pt-4 border-t border-slate-100 mt-auto">
+                            <app-skeleton height="2.5rem" borderRadius="0.75rem"></app-skeleton>
+                        </div>
+                    </div>
+                    }
+                </div>
+                } @else if (parsedHabits().length === 0) {
                 <div
                     class="animate-in fade-in duration-500 delay-200 text-center py-16 px-6 bg-white rounded-2xl border border-slate-200 border-dashed">
                     <div
@@ -98,7 +142,8 @@
                 <div
                     class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-in fade-in slide-in-from-bottom-4 duration-500 delay-200 fill-mode-both">
                     @for (habit of filteredHabits(); track habit.id) {
-                    <app-habit-card [habit]="habit" (onRecord)="handleRecordHabit($event)"></app-habit-card>
+                    <app-habit-card [habit]="habit" (onRecord)="handleRecordHabit($event)"
+                        (onClick)="handleCardClick($event)"></app-habit-card>
                     }
                 </div>
                 }
@@ -107,7 +152,13 @@
         </div>
     </main>
 
-    <app-create-habit-modal [isOpen]="isModalOpen()" [goalsOptions]="goalsOptions()" (closeModal)="closeModal()"
-        (onSave)="handleCreateHabit($event)">
+    <app-create-habit-modal [isOpen]="isModalOpen()" [habitToEdit]="selectedHabit()" [goalsOptions]="goalsOptions()"
+        (closeModal)="closeModal()" (onSave)="handleCreateHabit($event)" (onDelete)="handleDeleteHabit($event)">
     </app-create-habit-modal>
+
+    <app-confirmation-modal [isOpen]="isDeleteModalOpen()" title="Remover Hábito"
+        message="Tem certeza que deseja remover este hábito? Esta ação não pode ser desfeita."
+        confirmText="Sim, Remover" cancelText="Cancelar" variant="danger" [isLoading]="isSaving()"
+        (confirm)="onConfirmDelete()" (cancel)="closeDeleteModal()">
+    </app-confirmation-modal>
 </div>

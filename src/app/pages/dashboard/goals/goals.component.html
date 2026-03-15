@@ -52,7 +52,7 @@
                 <div
                     class="grid grid-cols-1 md:grid-cols-2 gap-6 pb-12 animate-in fade-in slide-in-from-bottom-4 duration-500">
                     @for (goal of sortedGoals(); track goal.sk) {
-                    <app-goal-card [goal]="goal" (onViewDetails)="handleViewDetails($event)"></app-goal-card>
+                    <app-goal-card [goal]="goal" (onEdit)="handleViewDetails($event)"></app-goal-card>
                     }
                 </div>
                 }
