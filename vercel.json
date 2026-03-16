@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/resolucao/:path*",
-      "destination": "https://metasflow-git-main-syaoraneas-projects.vercel.app/:path*"
+      "destination": "https://metasflow.vercel.app/login/:path*"
     },
     {
       "source": "/((?!resolucao).* )",
