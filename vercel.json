@@ -1,12 +1,12 @@
 {
-    "rewrites": [
-        {
-            "source": "/resolucao/:match*",
-            "destination": "https://metasflow-git-main-syaoraneas-projects.vercel.app/login/:match*"
-        },
-        {
-            "source": "/(.*)",
-            "destination": "/index.html"
-        }
-    ]
+  "rewrites": [
+    {
+      "source": "/resolucao/:path*",
+      "destination": "https://metasflow-git-main-syaoraneas-projects.vercel.app/:path*"
+    },
+    {
+      "source": "/((?!resolucao).* )",
+      "destination": "/index.html"
+    }
+  ]
 }
