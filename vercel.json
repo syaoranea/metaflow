@@ -1,16 +1,8 @@
 {
   "rewrites": [
-    {
-      "source": "/resolucao/_next/:match*",
-      "destination": "https://metasflow-khrm.vercel.app/_next/:match*"
-    },
-    {
-      "source": "/resolucao/:match*",
-      "destination": "https://metasflow-khrm.vercel.app/:match*"
-    },
-    {
-      "source": "/_next/:match*",
-      "destination": "https://metaflow-ten.vercel.app/_next/:match*"
+     {
+      "source": "/resolucao/:path*",
+      "destination": "https://metasflow-khrm.vercel.app/:path*"
     },
     {
       "source": "/:match*",
