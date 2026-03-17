@@ -1,12 +1,12 @@
 {
   "rewrites": [
     {
-      "source": "/resolucao/:path*",
-      "destination": "https://metasflow.vercel.app/login/:path*"
+      "source": "/resolucao/:match(.*)",
+      "destination": "https://metasflow-khrm.vercel.app/:match*"
     },
     {
-      "source": "/((?!resolucao).* )",
-      "destination": "/index.html"
+      "source": "/:match(.*)",
+      "destination": "https://metaflow-ten.vercel.app/"
     }
   ]
 }
