@@ -1,12 +1,20 @@
 {
   "rewrites": [
     {
-      "source": "/resolucao/:match(.*)",
+      "source": "/resolucao/_next/:match*",
+      "destination": "https://metasflow-khrm.vercel.app/_next/:match*"
+    },
+    {
+      "source": "/resolucao/:match*",
       "destination": "https://metasflow-khrm.vercel.app/:match*"
     },
     {
-      "source": "/:match(.*)",
-      "destination": "https://metaflow-ten.vercel.app/"
+      "source": "/_next/:match*",
+      "destination": "https://metaflow-ten.vercel.app/_next/:match*"
+    },
+    {
+      "source": "/:match*",
+      "destination": "https://metaflow-ten.vercel.app/:match*"
     }
   ]
 }
