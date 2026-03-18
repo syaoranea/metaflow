@@ -35,6 +35,25 @@ export const routes: Routes = [
                 path: 'tools',
                 children: [
                     { path: '', component: ToolsComponent },
+                    {
+                        path: 'mfe1',
+                        loadComponent: () => import('@angular-architects/native-federation').then(m => m.loadRemoteModule('mfe1', './Component')).then(m => m.AppComponent).catch(err => {
+                            console.error('Error loading remote module', err);
+                            // Provide an error component or returning void depending on your needs.
+                        })
+                    },
+                    {
+                        path: 'gerador-metas',
+                        loadComponent: () => import('@angular-architects/native-federation')
+                            .then(m => m.loadRemoteModule('gerador-metas', './Component'))
+                            .then(m => m.AppComponent)
+                            .catch(err => {
+                                console.error('Error loading Gerador de Metas MFE:', err);
+                                // Fallback or redirect if loading fails
+                                window.location.href = 'https://metasflow-khrm.vercel.app';
+                                return null;
+                            })
+                    },
                     { path: ':id', component: ToolDetailsComponent }
                 ]
             }

@@ -1,0 +1,4 @@
+{
+	"mfe1": "http://localhost:3000/remoteEntry.json",
+	"gerador-metas": "https://metasflow-khrm.vercel.app/remoteEntry.json"
+}

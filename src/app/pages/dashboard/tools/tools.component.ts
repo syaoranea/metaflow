@@ -11,6 +11,7 @@ export interface Tool {
     color: string;
     rating: number;
     featured?: boolean;
+    mfeRoute?: string;
 }
 
 @Component({
@@ -60,7 +61,8 @@ export class ToolsComponent {
             icon: 'sparkles',
             category: 'Estratégia',
             color: 'from-blue-400 to-cyan-600',
-            rating: 4.9
+            rating: 4.9,
+            mfeRoute: 'gerador-metas'
         },
         {
             id: 'focus-hero',

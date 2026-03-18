@@ -48,7 +48,7 @@
             <!-- App Grid -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 @for (tool of filteredTools(); track tool.id) {
-                <div [routerLink]="['/dashboard/tools', tool.id]"
+                <div [routerLink]="tool.mfeRoute ? ['/dashboard/tools', tool.mfeRoute] : ['/dashboard/tools', tool.id]"
                     class="group relative bg-white rounded-3xl border border-slate-200 p-6 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 cursor-pointer flex flex-col">
 
                     <!-- Tool Icon/Gradient -->
@@ -139,7 +139,7 @@
                         </div>
                         <span
                             class="text-xs font-bold text-slate-900 bg-slate-100 px-3 py-1.5 rounded-lg group-hover:bg-slate-900 group-hover:text-white transition-all duration-300">
-                            Ver Detalhes
+                            Acessar
                         </span>
                     </div>
                 </div>
