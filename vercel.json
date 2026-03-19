@@ -1,12 +1,12 @@
 {
   "rewrites": [
     {
-      "source": "/resolucao/_next/:path*",
-      "destination": "https://metasflow-khrm.vercel.app/_next/:path*"
+      "source": "/api/nutriplanner/:path*",
+      "destination": "https://nutri-planer.vercel.app/:path*"
     },
     {
-      "source": "/resolucao/:path*",
-      "destination": "https://metasflow-khrm.vercel.app/:path*"
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }
