@@ -21,6 +21,7 @@ export class MfeWrapperComponent implements OnInit {
     try {
       // Obter o usuário atual
       const user = await this.authService.getUser();
+      console.log('Usuário:', user);
       const currentUserId = user?.id || 'guest';
 
       console.log('Carregando NutriPlanner MFE para o usuário:', currentUserId);
