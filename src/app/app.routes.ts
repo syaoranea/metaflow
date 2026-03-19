@@ -58,6 +58,10 @@ export const routes: Routes = [
                         path: 'nutri-planner',
                         loadComponent: () => import('./pages/dashboard/tools/mfe-wrapper/mfe-wrapper.component').then(m => m.MfeWrapperComponent)
                     },
+                    {
+                        path: 'planner-devocional',
+                        loadComponent: () => import('./pages/dashboard/tools/planner-wrapper/planner-wrapper.component').then(m => m.PlannerWrapperComponent)
+                    },
                     { path: ':id', component: ToolDetailsComponent }
                 ]
             }

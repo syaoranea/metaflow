@@ -82,6 +82,16 @@ export class ToolsComponent {
             category: 'Finanças',
             color: 'from-indigo-400 to-blue-600',
             rating: 4.8
+        },
+        {
+            id: 'planner-devocional',
+            name: 'Planner Devocional',
+            description: 'Organize seu tempo de devoção e reflexão diária com suporte a múltiplos perfis.',
+            icon: 'book-open',
+            category: 'Saúde & Bem-estar',
+            color: 'from-purple-400 to-indigo-600',
+            rating: 4.8,
+            mfeRoute: 'planner-devocional'
         }
     ]);
 
