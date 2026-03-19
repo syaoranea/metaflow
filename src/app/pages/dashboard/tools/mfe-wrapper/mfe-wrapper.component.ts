@@ -25,25 +25,44 @@ export class MfeWrapperComponent implements OnInit {
 
       console.log('Carregando NutriPlanner MFE para o usuário:', currentUserId);
 
-      // Carregar o módulo remoto usando a configuração completa (cast para any para aceitar as propriedades do snippet do usuário)
-      const m = await (loadRemoteModule as any)({
-        type: 'module',
-        remoteEntry: 'https://nutri-planer.vercel.app/remoteEntry.js',
-        exposedModule: './Component'
-      });
+      // Carregar o módulo remoto
+      let m: any;
+      try {
+        // Tentar via loadRemoteModule (formato padrão do Native Federation)
+        m = await (loadRemoteModule as any)({
+          type: 'module',
+          remoteEntry: 'https://nutri-planer.vercel.app/remoteEntry.js',
+          exposedModule: './Component'
+        });
+      } catch (err) {
+        console.warn('loadRemoteModule falhou (provavelmente erro de JSON no servidor). Usando fallback de importação direta.', err);
+        // Fallback: Importação direta via ESM (o nutri-planer exporta get/init como ESM)
+        const module = await (new Function(`return import('https://nutri-planer.vercel.app/remoteEntry.js')`))();
+        
+        // Se for um container de Module Federation (tem get/init)
+        if (module && module.get && module.init) {
+          await module.init((globalThis as any).__share_scopes__?.default || {});
+          const factory = await module.get('./Component');
+          m = factory();
+        } else {
+          m = module;
+        }
+      }
 
       // Limpar o container antes de criar o novo componente
       this.viewContainer.clear();
 
-      // Criar o componente no container
-      // Nota: Dependendo de como o MFE expõe o componente, pode ser m.App, m.AppComponent, etc.
-      // O snippet do usuário sugeriu m.App
-      const componentRef = this.viewContainer.createComponent(m.App || m.AppComponent || m.default);
+      // Identificar o componente (App, AppComponent, or Default)
+      const component = m.App || m.AppComponent || m.default || m;
+      
+      console.log('Componente identificado:', component);
+      
+      const componentRef = this.viewContainer.createComponent(component);
       
       // Passar o idUsuario como input
       componentRef.setInput('idUsuario', currentUserId);
       
-      console.log('NutriPlanner MFE carregado com sucesso e idUsuario injetado.');
+      console.log('NutriPlanner MFE carregado com sucesso.');
     } catch (err) {
       console.error('Erro ao carregar NutriPlanner MFE:', err);
     }
