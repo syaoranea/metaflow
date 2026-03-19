@@ -59,8 +59,8 @@ export class MfeWrapperComponent implements OnInit {
       
       const componentRef = this.viewContainer.createComponent(component);
       
-      // Passar o idUsuario como input
-      componentRef.setInput('idUsuario', currentUserId);
+      // Passar o userId como input
+      componentRef.setInput('userId', currentUserId);
       
       console.log('NutriPlanner MFE carregado com sucesso.');
     } catch (err) {
