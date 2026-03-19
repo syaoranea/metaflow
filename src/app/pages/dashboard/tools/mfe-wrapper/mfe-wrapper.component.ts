@@ -25,8 +25,12 @@ export class MfeWrapperComponent implements OnInit {
 
       console.log('Carregando NutriPlanner MFE para o usuário:', currentUserId);
 
-      // Carregar o módulo remoto
-      const m = await loadRemoteModule('nutri-planner', './Component');
+      // Carregar o módulo remoto usando a configuração completa (cast para any para aceitar as propriedades do snippet do usuário)
+      const m = await (loadRemoteModule as any)({
+        type: 'module',
+        remoteEntry: 'https://nutri-planer.vercel.app/remoteEntry.js',
+        exposedModule: './Component'
+      });
 
       // Limpar o container antes de criar o novo componente
       this.viewContainer.clear();
