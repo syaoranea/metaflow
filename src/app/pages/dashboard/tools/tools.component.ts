@@ -26,14 +26,15 @@ export class ToolsComponent {
 
     tools = signal<Tool[]>([
         {
-            id: 'routine-analyzer',
-            name: 'Analizador de Rotinas',
-            description: 'IA que analisa seus hábitos e sugere melhorias baseadas em seu desempenho real.',
-            icon: 'brain-circuit',
-            category: 'Inteligência Artificial',
-            color: 'from-purple-500 to-indigo-600',
+            id: 'nutri-planner',
+            name: 'NutriPlanner',
+            description: 'Planejamento nutricional inteligente para uma vida saudável. Controle sua alimentação com precisão.',
+            icon: 'utensils',
+            category: 'Saúde & Bem-estar',
+            color: 'from-emerald-400 to-green-600',
             rating: 4.9,
-            featured: true
+            featured: true,
+            mfeRoute: 'nutri-planner'
         },
         {
             id: 'goal-calculator',
