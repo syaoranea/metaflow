@@ -59,6 +59,10 @@ export const routes: Routes = [
                         loadComponent: () => import('./pages/dashboard/tools/mfe-wrapper/mfe-wrapper.component').then(m => m.MfeWrapperComponent)
                     },
                     {
+                        path: 'controle-financeiro',
+                        loadComponent: () => import('./pages/dashboard/tools/finance-wrapper/finance-wrapper.component').then(m => m.FinanceWrapperComponent)
+                    },
+                    {
                         path: 'planner-devocional',
                         loadComponent: () => import('./pages/dashboard/tools/planner-wrapper/planner-wrapper.component').then(m => m.PlannerWrapperComponent)
                     },

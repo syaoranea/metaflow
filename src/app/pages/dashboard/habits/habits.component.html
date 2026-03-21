@@ -1,12 +1,12 @@
 <div
-    class="flex-1 flex flex-col h-full bg-slate-50 selection:bg-emerald-100 selection:text-emerald-900 overflow-x-hidden">
+    class="flex-1 flex flex-col h-full bg-slate-50 dark:bg-slate-950 selection:bg-emerald-100 selection:text-emerald-900 dark:selection:bg-emerald-900/30 dark:selection:text-emerald-200 overflow-x-hidden">
     <main class="flex-1 overflow-y-auto p-6 md:p-8">
         <div class="mx-auto max-w-6xl w-full flex flex-col min-h-full pb-12">
             <!-- Habits Header -->
             <!-- Back to Goals (if goal specific) -->
             @if (goalId()) {
             <button routerLink="/dashboard/goals"
-                class="inline-flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors mb-4 group">
+                class="inline-flex items-center gap-2 text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors mb-4 group">
                 <svg class="w-4 h-4 transition-transform group-hover:-translate-x-1" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" stroke-width="2">
                     <line x1="19" y1="12" x2="5" y2="12"></line>
@@ -19,17 +19,17 @@
             <div
                 class="animate-in fade-in slide-in-from-bottom-4 duration-500 flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
                 <div>
-                    <h1 class="text-3xl font-bold tracking-tight text-slate-900 mb-2">
+                    <h1 class="text-3xl font-bold tracking-tight text-slate-900 dark:text-white mb-2">
                         {{ parentGoal() ? parentGoal()?.title : 'Hábitos Diários' }}
                     </h1>
-                    <p class="text-slate-500 max-w-2xl">
+                    <p class="text-slate-500 dark:text-slate-400 max-w-2xl">
                         {{ parentGoal() ? (parentGoal()?.description || 'Hábitos e sub-metas vinculados a este
                         objetivo.') : 'Mantenha a consistência. A disciplina diária é a ponte entre seus objetivos e
                         suas realizações.' }}
                     </p>
                 </div>
                 <button (click)="openModal()"
-                    class="inline-flex items-center justify-center gap-2 rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-slate-800 transition-colors shrink-0">
+                    class="inline-flex items-center justify-center gap-2 rounded-lg bg-slate-900 dark:bg-slate-800 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-slate-800 dark:hover:bg-slate-700 transition-colors shrink-0">
                     <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                         stroke-linecap="round" stroke-linejoin="round">
                         <line x1="12" y1="5" x2="12" y2="19"></line>
@@ -41,7 +41,7 @@
 
             <!-- Overall Consistency -->
             <div
-                class="animate-in fade-in zoom-in-95 duration-500 delay-100 fill-mode-both mb-8 p-6 bg-slate-900 rounded-2xl text-white shadow-md relative overflow-hidden">
+                class="animate-in fade-in zoom-in-95 duration-500 delay-100 fill-mode-both mb-8 p-6 bg-slate-900 dark:bg-slate-900/50 border border-slate-800 rounded-2xl text-white shadow-md relative overflow-hidden">
                 <div
                     class="absolute right-0 top-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3">
                 </div>
@@ -72,13 +72,17 @@
 
             <!-- Filter Tabs -->
             <div
-                class="animate-in fade-in duration-500 delay-150 fill-mode-both border-b border-slate-200 mb-6 flex gap-6">
+                class="animate-in fade-in duration-500 delay-150 fill-mode-both border-b border-slate-200 dark:border-slate-800 mb-6 flex gap-6">
                 <button [class.text-slate-900]="activeTab() === 'today'"
+                    [class.dark:text-white]="activeTab() === 'today'"
                     [class.border-slate-900]="activeTab() === 'today'"
-                    class="pb-4 text-sm font-medium border-b-2 transition-colors border-transparent text-slate-500 hover:text-slate-700"
+                    [class.dark:border-white]="activeTab() === 'today'"
+                    class="pb-4 text-sm font-medium border-b-2 transition-colors border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200"
                     (click)="setTab('today')">Para Hoje</button>
                 <button [class.text-slate-900]="activeTab() === 'all'" [class.border-slate-900]="activeTab() === 'all'"
-                    class="pb-4 text-sm font-medium border-b-2 transition-colors border-transparent text-slate-500 hover:text-slate-700"
+                    [class.dark:text-white]="activeTab() === 'all'"
+                    [class.dark:border-white]="activeTab() === 'all'"
+                    class="pb-4 text-sm font-medium border-b-2 transition-colors border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200"
                     (click)="setTab('all')">Todos os Hábitos</button>
             </div>
 
@@ -112,7 +116,7 @@
                 </div>
                 } @else if (parsedHabits().length === 0) {
                 <div
-                    class="animate-in fade-in duration-500 delay-200 text-center py-16 px-6 bg-white rounded-2xl border border-slate-200 border-dashed">
+                    class="animate-in fade-in duration-500 delay-200 text-center py-16 px-6 bg-white dark:bg-slate-900/50 rounded-2xl border border-slate-200 dark:border-slate-800 border-dashed">
                     <div
                         class="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4 text-slate-400">
                         <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -121,11 +125,11 @@
                             <polyline points="22 4 12 14.01 9 11.01"></polyline>
                         </svg>
                     </div>
-                    <h3 class="text-lg font-semibold text-slate-900 mb-2">Nenhum hábito cadastrado</h3>
-                    <p class="text-slate-500 mb-6 max-w-sm mx-auto text-sm text-balance">Comece criando seu primeiro
+                    <h3 class="text-lg font-semibold text-slate-900 dark:text-white mb-2">Nenhum hábito cadastrado</h3>
+                    <p class="text-slate-500 dark:text-slate-400 mb-6 max-w-sm mx-auto text-sm text-balance">Comece criando seu primeiro
                         hábito para acompanhar sua consistência diária.</p>
                     <button (click)="openModal()"
-                        class="inline-flex items-center justify-center gap-2 rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-slate-800 transition-colors">
+                        class="inline-flex items-center justify-center gap-2 rounded-lg bg-slate-900 dark:bg-slate-800 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-slate-800 dark:hover:bg-slate-700 transition-colors">
                         <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                             stroke-linecap="round" stroke-linejoin="round">
                             <line x1="12" y1="5" x2="12" y2="19"></line>

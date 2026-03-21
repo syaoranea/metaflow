@@ -1,6 +1,6 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink, Router } from '@angular/router';
 
 export interface Tool {
     id: string;
@@ -13,6 +13,7 @@ export interface Tool {
     featured?: boolean;
     longDescription?: string;
     features?: string[];
+    mfeRoute?: string;
 }
 
 @Component({
@@ -24,6 +25,7 @@ export interface Tool {
 })
 export class ToolDetailsComponent implements OnInit {
     private route = inject(ActivatedRoute);
+    private router = inject(Router);
 
     tool = signal<Tool | null>(null);
 
@@ -75,6 +77,28 @@ export class ToolDetailsComponent implements OnInit {
                 'Exportação de dados em CSV/JSON',
                 'Alertas inteligentes de quebra de sequência'
             ]
+        },
+        {
+            id: 'controle-financeiro-info',
+            name: 'Controle Financeiro',
+            description: 'Gerenciamento completo do seu fluxo de caixa, despesas e investimentos com integração em tempo real.',
+            longDescription: 'Tenha clareza total sobre para onde está indo o seu dinheiro. O Controle Financeiro é uma ferramenta completa que integra registro de gastos diários, controle de renda, orçamento por categoria, acompanhamento de investimentos e revisão estratégica mensal em um único painel.\n\nCom integração em tempo real com sua base de dados Supabase, todas as suas informações financeiras ficam sincronizadas e disponíveis instantaneamente, de qualquer lugar.',
+            icon: 'banknote',
+            category: 'Finanças',
+            color: 'from-emerald-400 to-teal-600',
+            rating: 4.9,
+            featured: true,
+            mfeRoute: 'controle-financeiro',
+            features: [
+                'Registro de gastos diários por categoria e subcategoria',
+                'Controle de entradas de renda mensais',
+                'Visão geral e orçamento mensal por categoria (com barras de progresso)',
+                'Carteira de investimentos com rendimento calculado automaticamente',
+                'Revisão estratégica: patrimônio, dívidas e metas com IA',
+                'Integração em tempo real com Supabase',
+                'Histórico de patrimônio em gráfico de barras',
+                'Geração de metas financeiras com Inteligência Artificial'
+            ]
         }
     ];
 
@@ -89,5 +113,12 @@ export class ToolDetailsComponent implements OnInit {
                 this.tool.set(this.toolsData[0]);
             }
         });
+    }
+
+    navigateToMfe() {
+        const route = this.tool()?.mfeRoute;
+        if (route) {
+            this.router.navigate(['/dashboard/tools', route]);
+        }
     }
 }

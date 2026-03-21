@@ -11,6 +11,11 @@ import { CommonModule } from '@angular/common';
 })
 export class SidebarComponent {
   isMobileOpen: boolean = false;
+  isCollapsed: boolean = false;
+
+  toggleCollapse(): void {
+    this.isCollapsed = !this.isCollapsed;
+  }
 
   links = [
     {

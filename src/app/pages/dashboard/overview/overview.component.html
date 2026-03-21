@@ -3,7 +3,7 @@
 
     <!-- Stats Grid -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+        <div class="bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 transition-colors">
             <div class="flex items-center gap-4 mb-4">
                 <div class="p-3 bg-emerald-50 text-emerald-600 rounded-xl">
                     <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -11,19 +11,19 @@
                         <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
                     </svg>
                 </div>
-                <h3 class="font-semibold text-slate-700">Consistência</h3>
+                <h3 class="font-semibold text-slate-700 dark:text-slate-300">Consistência</h3>
             </div>
             <div class="flex items-end gap-2">
-                <span class="text-3xl font-bold text-slate-900">{{ stats().habitsCompletion }}%</span>
+                <span class="text-3xl font-bold text-slate-900 dark:text-white">{{ stats().habitsCompletion }}%</span>
                 <span class="text-slate-400 text-sm mb-1">dos hábitos</span>
             </div>
-            <div class="mt-4 w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+            <div class="mt-4 w-full bg-slate-100 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
                 <div class="bg-emerald-500 h-full transition-all duration-1000"
                     [style.width.%]="stats().habitsCompletion"></div>
             </div>
         </div>
 
-        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+        <div class="bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 transition-colors">
             <div class="flex items-center gap-4 mb-4">
                 <div class="p-3 bg-blue-50 text-blue-600 rounded-xl">
                     <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -32,19 +32,19 @@
                         <line x1="8" y1="12" x2="16" y2="12"></line>
                     </svg>
                 </div>
-                <h3 class="font-semibold text-slate-700">Progresso Metas</h3>
+                <h3 class="font-semibold text-slate-700 dark:text-slate-300">Progresso Metas</h3>
             </div>
             <div class="flex items-end gap-2">
-                <span class="text-3xl font-bold text-slate-900">{{ stats().goalsProgress }}%</span>
+                <span class="text-3xl font-bold text-slate-900 dark:text-white">{{ stats().goalsProgress }}%</span>
                 <span class="text-slate-400 text-sm mb-1">concluído</span>
             </div>
-            <div class="mt-4 w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+            <div class="mt-4 w-full bg-slate-100 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
                 <div class="bg-blue-500 h-full transition-all duration-1000" [style.width.%]="stats().goalsProgress">
                 </div>
             </div>
         </div>
 
-        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+        <div class="bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 transition-colors">
             <div class="flex items-center gap-4 mb-4">
                 <div class="p-3 bg-amber-50 text-amber-600 rounded-xl">
                     <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -53,13 +53,13 @@
                         </path>
                     </svg>
                 </div>
-                <h3 class="font-semibold text-slate-700">Frequência</h3>
+                <h3 class="font-semibold text-slate-700 dark:text-slate-300">Frequência</h3>
             </div>
             <div class="flex items-end gap-2">
-                <span class="text-3xl font-bold text-slate-900">{{ stats().activeDays }}</span>
+                <span class="text-3xl font-bold text-slate-900 dark:text-white">{{ stats().activeDays }}</span>
                 <span class="text-slate-400 text-sm mb-1">dias seguidos</span>
             </div>
-            <p class="mt-4 text-sm text-slate-500">Você está no caminho certo!</p>
+            <p class="mt-4 text-sm text-slate-500 dark:text-slate-400">Você está no caminho certo!</p>
         </div>
     </div>
 
@@ -68,33 +68,33 @@
         <!-- Recent Habits -->
         <section class="space-y-4">
             <div class="flex items-center justify-between">
-                <h2 class="text-xl font-bold text-slate-900">Hábitos Recentes</h2>
+                <h2 class="text-xl font-bold text-slate-900 dark:text-white">Hábitos Recentes</h2>
                 <a routerLink="/dashboard/habits"
-                    class="text-sm font-semibold text-slate-600 hover:text-slate-900 transition-colors">Ver todos →</a>
+                    class="text-sm font-semibold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors">Ver todos →</a>
             </div>
             <div class="space-y-3">
                 @if (recentHabits().length > 0) {
                 @for (habit of recentHabits(); track habit.id) {
-                <div class="bg-white p-4 rounded-xl border border-slate-200 flex items-center justify-between">
+                <div class="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 flex items-center justify-between transition-colors">
                     <div class="flex items-center gap-4">
                         <div
-                            class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 font-bold">
+                            class="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-400 font-bold">
                             {{ habit.title[0] }}
                         </div>
                         <div>
-                            <h4 class="font-semibold text-slate-800">{{ habit.title }}</h4>
+                            <h4 class="font-semibold text-slate-800 dark:text-slate-200">{{ habit.title }}</h4>
                             <p class="text-xs text-slate-400 tracking-wide">{{ habit.goal.title }}</p>
                         </div>
                     </div>
                     <div class="text-right">
-                        <span class="text-sm font-bold text-slate-900">{{ habit._progresso_atual }}/{{ habit._meta_total
+                        <span class="text-sm font-bold text-slate-900 dark:text-white">{{ habit._progresso_atual }}/{{ habit._meta_total
                             }}</span>
                     </div>
                 </div>
                 }
                 } @else {
                 <div
-                    class="bg-slate-50 border-2 border-dashed border-slate-200 rounded-xl p-8 text-center text-slate-400">
+                    class="bg-slate-50 dark:bg-slate-900/50 border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-xl p-8 text-center text-slate-400">
                     Nenhum hábito registrado ainda.
                 </div>
                 }
@@ -104,17 +104,17 @@
         <!-- Primary Goals -->
         <section class="space-y-4">
             <div class="flex items-center justify-between">
-                <h2 class="text-xl font-bold text-slate-900">Suas Metas</h2>
+                <h2 class="text-xl font-bold text-slate-900 dark:text-white">Suas Metas</h2>
                 <a routerLink="/dashboard/goals"
-                    class="text-sm font-semibold text-slate-600 hover:text-slate-900 transition-colors">Focar em metas
+                    class="text-sm font-semibold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors">Focar em metas
                     →</a>
             </div>
             <div class="space-y-3">
                 @if (primaryGoals().length > 0) {
                 @for (goal of primaryGoals(); track goal.sk) {
-                <div class="bg-white p-5 rounded-xl border border-slate-200">
-                    <h4 class="font-bold text-slate-900 mb-3">{{ goal.title }}</h4>
-                    <div class="w-full bg-slate-100 h-3 rounded-full overflow-hidden mb-2">
+                <div class="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 transition-colors">
+                    <h4 class="font-bold text-slate-900 dark:text-white mb-3">{{ goal.title }}</h4>
+                    <div class="w-full bg-slate-100 dark:bg-slate-800 h-3 rounded-full overflow-hidden mb-2">
                         <div class="bg-indigo-600 h-full rounded-full transition-all duration-1000"
                             [style.width.%]="goal.progress"></div>
                     </div>
@@ -127,7 +127,7 @@
                 }
                 } @else {
                 <div
-                    class="bg-slate-50 border-2 border-dashed border-slate-200 rounded-xl p-8 text-center text-slate-400">
+                    class="bg-slate-50 dark:bg-slate-900/50 border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-xl p-8 text-center text-slate-400">
                     Clique em metas para definir seu propósito.
                 </div>
                 }

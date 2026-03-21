@@ -1,17 +1,17 @@
 <div
-    class="flex-1 flex flex-col h-full bg-slate-50 selection:bg-emerald-100 selection:text-emerald-900 overflow-x-hidden relative">
+    class="flex-1 flex flex-col h-full bg-slate-50 dark:bg-slate-950 selection:bg-emerald-100 selection:text-emerald-900 dark:selection:bg-emerald-900/30 dark:selection:text-emerald-200 overflow-x-hidden relative transition-colors">
     <main class="flex-1 overflow-y-auto p-6 md:p-8 pb-32">
         @if (!loaded) {
         <div class="flex-1 flex items-center justify-center">
-            <div class="animate-pulse text-slate-400">Puxando preferências...</div>
+            <div class="animate-pulse text-slate-400 dark:text-slate-600">Puxando preferências...</div>
         </div>
         } @else {
         <div
             class="mx-auto max-w-4xl w-full flex flex-col min-h-full animate-in fade-in slide-in-from-bottom-4 duration-500">
 
             <div class="mb-8">
-                <h1 class="text-3xl font-bold tracking-tight text-slate-900 mb-2">Configurações & Perfil</h1>
-                <p class="text-slate-500 max-w-2xl">
+                <h1 class="text-3xl font-bold tracking-tight text-slate-900 dark:text-white mb-2">Configurações & Perfil</h1>
+                <p class="text-slate-500 dark:text-slate-400 max-w-2xl">
                     Gerencie seus dados pessoais, preferências do sistema, notificações e detalhes da assinatura.
                 </p>
             </div>
@@ -20,41 +20,41 @@
                 class="flex flex-col gap-0 duration-500 delay-100 fill-mode-both animate-in fade-in zoom-in-95">
 
                 <!-- Profile Section -->
-                <div class="bg-white border text-slate-900 border-slate-200 shadow-sm p-6 sm:p-8 rounded-t-xl">
+                <div class="bg-white dark:bg-slate-900 border text-slate-900 dark:text-white border-slate-200 dark:border-slate-800 shadow-sm p-6 sm:p-8 rounded-t-xl transition-colors">
                     <h2 class="text-lg font-bold mb-1">Perfil e Dados Pessoais</h2>
-                    <p class="text-sm text-slate-500 mb-6">Como você será identificado no aplicativo.</p>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 mb-6">Como você será identificado no aplicativo.</p>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1">Nome Completo</label>
+                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Nome Completo</label>
                             <input type="text" formControlName="name"
-                                class="block w-full rounded-lg border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2 px-3 border" />
+                                class="block w-full rounded-lg border-slate-300 dark:border-slate-700 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2 px-3 border bg-white dark:bg-slate-800 text-slate-900 dark:text-white" />
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1">E-mail</label>
+                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">E-mail</label>
                             <input type="email" formControlName="email"
-                                class="block w-full rounded-lg border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2 px-3 border bg-slate-50"
+                                class="block w-full rounded-lg border-slate-300 dark:border-slate-700 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2 px-3 border bg-slate-50 dark:bg-slate-800/50 text-slate-500 dark:text-slate-400"
                                 readonly />
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1">Profissão / Papel principal
+                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Profissão / Papel principal
                                 (Opcional)</label>
                             <input type="text" formControlName="profession"
-                                class="block w-full rounded-lg border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2 px-3 border"
+                                class="block w-full rounded-lg border-slate-300 dark:border-slate-700 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2 px-3 border bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
                                 placeholder="Ex: Engenheiro de Software" />
                         </div>
                     </div>
                     <div class="mt-6 flex flex-wrap items-center gap-4">
                         <div
-                            class="h-16 w-16 bg-slate-100 rounded-full flex items-center justify-center border border-slate-200 text-slate-400 font-bold text-xl uppercase">
+                            class="h-16 w-16 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center border border-slate-200 dark:border-slate-700 text-slate-400 dark:text-slate-500 font-bold text-xl uppercase">
                             {{ userName.charAt(0) }}
                         </div>
                         <div class="flex flex-col gap-1">
                             <button type="button"
-                                class="text-sm font-semibold text-indigo-600 hover:text-indigo-500 transition-colors text-left">
+                                class="text-sm font-semibold text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 transition-colors text-left">
                                 Alterar foto de perfil
                             </button>
                             <button type="button" (click)="updateProfile()" [disabled]="isSavingProfile"
-                                class="mt-2 inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-bold rounded-lg shadow-sm text-white bg-slate-900 hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500 transition-all min-w-[140px]">
+                                class="mt-2 inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-bold rounded-lg shadow-sm text-white bg-slate-900 dark:bg-slate-800 hover:bg-slate-800 dark:hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500 transition-all min-w-[140px]">
                                 @if (isSavingProfile) {
                                 <svg class="animate-spin h-4 w-4 text-white mr-2" viewBox="0 0 24 24">
                                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
@@ -73,16 +73,16 @@
                 </div>
 
                 <!-- Goals Preferences Section -->
-                <div class="bg-white border-x border-b text-slate-900 border-slate-200 p-6 sm:p-8">
+                <div class="bg-white dark:bg-slate-900 border-x border-b text-slate-900 dark:text-white border-slate-200 dark:border-slate-800 p-6 sm:p-8 transition-colors">
                     <h2 class="text-lg font-bold mb-1">Preferências de Metas e Hábitos</h2>
-                    <p class="text-sm text-slate-500 mb-6">Ajuste como o Meta Flow deve se comportar para o seu ritmo.
+                    <p class="text-sm text-slate-500 dark:text-slate-400 mb-6">Ajuste como o Meta Flow deve se comportar para o seu ritmo.
                     </p>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
                         <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1">Foco Principal no
+                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Foco Principal no
                                 momento</label>
                             <select formControlName="mainFocus"
-                                class="block w-full rounded-lg border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2.5 px-3 border">
+                                class="block w-full rounded-lg border-slate-300 dark:border-slate-700 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2.5 px-3 border bg-white dark:bg-slate-800 text-slate-900 dark:text-white">
                                 <option value="Saúde & Bem-estar">Saúde & Bem-estar</option>
                                 <option value="Finanças & Investimentos">Finanças & Investimentos</option>
                                 <option value="Carreira & Estudos">Carreira & Estudos</option>
@@ -90,35 +90,35 @@
                             </select>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1">Frequência padrão para novos
+                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Frequência padrão para novos
                                 hábitos</label>
                             <select formControlName="defaultHabitFrequency"
-                                class="block w-full rounded-lg border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2.5 px-3 border">
+                                class="block w-full rounded-lg border-slate-300 dark:border-slate-700 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2.5 px-3 border bg-white dark:bg-slate-800 text-slate-900 dark:text-white">
                                 <option value="daily">Diariamente</option>
                                 <option value="weekly">Semanalmente (Escolher dias)</option>
                                 <option value="monthly">Mensalmente</option>
                             </select>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1">Alvo de Hábitos
+                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Alvo de Hábitos
                                 Principais</label>
                             <div class="flex items-center gap-4">
                                 <input type="number" formControlName="yearlyTarget" min="1" max="50"
-                                    class="block w-24 rounded-lg border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2 px-3 border" />
-                                <span class="text-sm text-slate-500">hábitos simultâneos recomendados</span>
+                                    class="block w-24 rounded-lg border-slate-300 dark:border-slate-700 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2 px-3 border bg-white dark:bg-slate-800 text-slate-900 dark:text-white" />
+                                <span class="text-sm text-slate-500 dark:text-slate-400">hábitos simultâneos recomendados</span>
                             </div>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-2">Exibição de Progresso</label>
+                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Exibição de Progresso</label>
                             <div class="flex items-center gap-6">
-                                <label class="flex items-center gap-2 text-sm text-slate-700 cursor-pointer">
+                                <label class="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300 cursor-pointer">
                                     <input type="radio" value="percentage" formControlName="showProgressAs"
-                                        class="text-indigo-600 focus:ring-indigo-600 border-slate-300" />
+                                        class="text-indigo-600 focus:ring-indigo-600 border-slate-300 dark:border-slate-700 dark:bg-slate-800" />
                                     Porcentagem (%)
                                 </label>
-                                <label class="flex items-center gap-2 text-sm text-slate-700 cursor-pointer">
+                                <label class="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300 cursor-pointer">
                                     <input type="radio" value="points" formControlName="showProgressAs"
-                                        class="text-indigo-600 focus:ring-indigo-600 border-slate-300" />
+                                        class="text-indigo-600 focus:ring-indigo-600 border-slate-300 dark:border-slate-700 dark:bg-slate-800" />
                                     Pontos Fixos
                                 </label>
                             </div>
@@ -127,41 +127,41 @@
                 </div>
 
                 <!-- Notifications Section -->
-                <div class="bg-white border-x border-b text-slate-900 border-slate-200 p-6 sm:p-8"
+                <div class="bg-white dark:bg-slate-900 border-x border-b text-slate-900 dark:text-white border-slate-200 dark:border-slate-800 p-6 sm:p-8 transition-colors"
                     formGroupName="notifications">
                     <h2 class="text-lg font-bold mb-1">Notificações</h2>
-                    <p class="text-sm text-slate-500 mb-6">Mantenha-se responsável ou evite distrações.</p>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 mb-6">Mantenha-se responsável ou evite distrações.</p>
                     <div class="space-y-4">
                         <label class="flex items-start gap-3 cursor-pointer group">
                             <input type="checkbox" formControlName="dailyReminder"
-                                class="mt-1 h-4 w-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-600" />
+                                class="mt-1 h-4 w-4 rounded border-slate-300 dark:border-slate-700 text-indigo-600 focus:ring-indigo-600 dark:bg-slate-800" />
                             <div>
                                 <span
-                                    class="text-sm font-semibold text-slate-900 block group-hover:text-indigo-600 transition-colors">Lembrete
+                                    class="text-sm font-semibold text-slate-900 dark:text-white block group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Lembrete
                                     Diário de Execução</span>
-                                <span class="text-xs text-slate-500 block">Notificação push no final do dia para
+                                <span class="text-xs text-slate-500 dark:text-slate-400 block">Notificação push no final do dia para
                                     preencher hábitos não marcados.</span>
                             </div>
                         </label>
                         <label class="flex items-start gap-3 cursor-pointer group">
                             <input type="checkbox" formControlName="weeklySummary"
-                                class="mt-1 h-4 w-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-600" />
+                                class="mt-1 h-4 w-4 rounded border-slate-300 dark:border-slate-700 text-indigo-600 focus:ring-indigo-600 dark:bg-slate-800" />
                             <div>
                                 <span
-                                    class="text-sm font-semibold text-slate-900 block group-hover:text-indigo-600 transition-colors">Resumo
+                                    class="text-sm font-semibold text-slate-900 dark:text-white block group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Resumo
                                     Semanal (E-mail)</span>
-                                <span class="text-xs text-slate-500 block">Receba um relatório de performance todo
+                                <span class="text-xs text-slate-500 dark:text-slate-400 block">Receba um relatório de performance todo
                                     domingo à noite.</span>
                             </div>
                         </label>
                         <label class="flex items-start gap-3 cursor-pointer group">
                             <input type="checkbox" formControlName="delayedGoalAlert"
-                                class="mt-1 h-4 w-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-600" />
+                                class="mt-1 h-4 w-4 rounded border-slate-300 dark:border-slate-700 text-indigo-600 focus:ring-indigo-600 dark:bg-slate-800" />
                             <div>
                                 <span
-                                    class="text-sm font-semibold text-slate-900 block group-hover:text-indigo-600 transition-colors">Alerta
+                                    class="text-sm font-semibold text-slate-900 dark:text-white block group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Alerta
                                     de Metas Atrasadas</span>
-                                <span class="text-xs text-slate-500 block">Avisar quando o prazo de uma meta estiver
+                                <span class="text-xs text-slate-500 dark:text-slate-400 block">Avisar quando o prazo de uma meta estiver
                                     expirando e o progresso baixo.</span>
                             </div>
                         </label>
@@ -170,19 +170,19 @@
 
                 <!-- Security & Billing (Simplified forms) -->
                 <div
-                    class="bg-white border-x border-b text-slate-900 border-slate-200 p-6 sm:p-8 relative overflow-hidden">
+                    class="bg-white dark:bg-slate-900 border-x border-b text-slate-900 dark:text-white border-slate-200 dark:border-slate-800 p-6 sm:p-8 relative overflow-hidden transition-colors">
                     <div class="flex flex-col md:flex-row justify-between gap-6 relative z-10">
                         <div class="flex-1 space-y-4">
                             <h2 class="text-lg font-bold mb-1">Segurança</h2>
                             <button type="button"
-                                class="text-sm font-semibold py-2 px-4 border border-slate-300 rounded-lg shrink-0 w-max hover:bg-slate-50 transition-colors">
+                                class="text-sm font-semibold py-2 px-4 border border-slate-300 dark:border-slate-700 rounded-lg shrink-0 w-max hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-slate-900 dark:text-white">
                                 Alterar Senha de Acesso
                             </button>
                             <div class="pt-2">
                                 <label class="flex items-center gap-3 cursor-pointer">
                                     <input type="checkbox" formControlName="twoFactorEnabled"
-                                        class="h-4 w-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-600" />
-                                    <span class="text-sm font-semibold text-slate-900 block">Autenticação de Dois
+                                        class="h-4 w-4 rounded border-slate-300 dark:border-slate-700 text-indigo-600 focus:ring-indigo-600 dark:bg-slate-800" />
+                                    <span class="text-sm font-semibold text-slate-900 dark:text-white block">Autenticação de Dois
                                         Fatores (2FA)</span>
                                 </label>
                             </div>
@@ -191,15 +191,15 @@
                         <div class="w-px bg-slate-200 hidden md:block"></div>
 
                         <div class="flex-1 space-y-4">
-                            <h2 class="text-lg font-bold mb-1 text-indigo-900">Assinatura</h2>
-                            <div class="bg-indigo-50 border border-indigo-100 rounded-lg p-4">
+                            <h2 class="text-lg font-bold mb-1 text-indigo-900 dark:text-indigo-400">Assinatura</h2>
+                            <div class="bg-indigo-50 dark:bg-indigo-950/30 border border-indigo-100 dark:border-indigo-900/50 rounded-lg p-4">
                                 <div class="flex justify-between items-center mb-2">
-                                    <span class="text-sm font-bold text-indigo-900">Plano Atual</span>
+                                    <span class="text-sm font-bold text-indigo-900 dark:text-indigo-300">Plano Atual</span>
                                     <span
                                         class="text-xs font-bold text-white bg-indigo-600 px-2 py-0.5 rounded uppercase">{{
                                         currentPlan }}</span>
                                 </div>
-                                <p class="text-xs text-indigo-700/80 mb-4">
+                                <p class="text-xs text-indigo-700/80 dark:text-indigo-400/80 mb-4">
                                     {{ currentPlan === 'pro' ? 'Acesso ilimitado a análises avançadas, gamificação total
                                     e exportações.' : 'O plano básico permite tracking ilimitado, mas bloqueia insights
                                     avançados.' }}
@@ -215,14 +215,14 @@
 
                 <!-- Danger Zone -->
                 <div
-                    class="bg-red-50/50 border-x border-b border-rose-200 p-6 sm:p-8 rounded-b-xl flex flex-col md:flex-row items-center justify-between gap-4">
+                    class="bg-red-50/50 dark:bg-rose-950/20 border-x border-b border-rose-200 dark:border-rose-900/50 p-6 sm:p-8 rounded-b-xl flex flex-col md:flex-row items-center justify-between gap-4 transition-colors">
                     <div>
-                        <h2 class="text-lg font-bold text-rose-900 mb-1">Zona de Perigo</h2>
-                        <p class="text-sm text-rose-700/80">A exclusão da sua conta e de todos os seus dados de
+                        <h2 class="text-lg font-bold text-rose-900 dark:text-rose-400 mb-1">Zona de Perigo</h2>
+                        <p class="text-sm text-rose-700/80 dark:text-rose-400/80">A exclusão da sua conta e de todos os seus dados de
                             rastreamento é irreversível.</p>
                     </div>
                     <button type="button"
-                        class="shrink-0 font-semibold px-4 py-2 border border-rose-500 text-rose-600 hover:bg-rose-50 rounded-lg text-sm transition-colors">
+                        class="shrink-0 font-semibold px-4 py-2 border border-rose-500 dark:border-rose-800 text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-900/30 rounded-lg text-sm transition-colors">
                         Excluir minha conta
                     </button>
                 </div>
@@ -235,20 +235,20 @@
     <!-- SaveBar -->
     @if (isDirty) {
     <div
-        class="fixed bottom-0 left-0 lg:left-64 right-0 p-4 bg-white/80 backdrop-blur-md border-t border-slate-200 z-40 animate-in slide-in-from-bottom-full duration-300">
+        class="fixed bottom-0 left-0 lg:left-64 right-0 p-4 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 z-40 animate-in slide-in-from-bottom-full duration-300">
         <div class="max-w-4xl mx-auto flex items-center justify-between">
             <div class="flex items-center gap-3">
                 <div class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></div>
-                <span class="text-sm font-semibold text-slate-700">Você possui alterações não salvas.</span>
+                <span class="text-sm font-semibold text-slate-700 dark:text-slate-300">Você possui alterações não salvas.</span>
             </div>
             <div class="flex items-center gap-3">
                 <button type="button" (click)="cancel()"
-                    class="px-4 py-2 text-sm font-semibold text-slate-600 hover:bg-slate-100 rounded-lg transition-colors focus:outline-none"
+                    class="px-4 py-2 text-sm font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors focus:outline-none"
                     [disabled]="isSaving">
                     Descartar
                 </button>
                 <button type="button" (click)="save()"
-                    class="px-4 py-2 text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 shadow-sm hover:shadow rounded-lg transition-all focus:outline-none flex items-center min-w-[120px] justify-center"
+                    class="px-4 py-2 text-sm font-semibold text-white bg-indigo-600 dark:bg-indigo-500 hover:bg-indigo-700 dark:hover:bg-indigo-600 shadow-sm hover:shadow rounded-lg transition-all focus:outline-none flex items-center min-w-[120px] justify-center"
                     [disabled]="isSaving">
                     @if (isSaving) {
                     <svg class="animate-spin h-4 w-4 text-white" viewBox="0 0 24 24">
@@ -271,19 +271,19 @@
 <!-- Feedback Modal -->
 @if (showFeedbackModal()) {
 <div class="fixed inset-0 z-[100] flex items-center justify-center p-4 animate-in fade-in duration-300">
-    <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm" (click)="closeFeedbackModal()"></div>
+    <div class="absolute inset-0 bg-slate-900/60 dark:bg-slate-950/80 backdrop-blur-sm" (click)="closeFeedbackModal()"></div>
 
     <div
-        class="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-sm relative z-10 overflow-hidden animate-in zoom-in-95 duration-300">
+        class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 w-full max-w-sm relative z-10 overflow-hidden animate-in zoom-in-95 duration-300 transition-colors">
         <div class="p-8 flex flex-col items-center text-center">
             @if (feedbackType() === 'success') {
-            <div class="h-16 w-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mb-4">
+            <div class="h-16 w-16 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 rounded-full flex items-center justify-center mb-4 transition-colors">
                 <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
                     <polyline points="20 6 9 17 4 12"></polyline>
                 </svg>
             </div>
             } @else {
-            <div class="h-16 w-16 bg-rose-100 text-rose-600 rounded-full flex items-center justify-center mb-4">
+            <div class="h-16 w-16 bg-rose-100 dark:bg-rose-900/30 text-rose-600 dark:text-rose-400 rounded-full flex items-center justify-center mb-4 transition-colors">
                 <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
                     <line x1="18" y1="6" x2="6" y2="18"></line>
                     <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -291,10 +291,10 @@
             </div>
             }
 
-            <h3 class="text-xl font-bold text-slate-900 mb-2">
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">
                 {{ feedbackType() === 'success' ? 'Sucesso!' : 'Ops! Algo deu errado' }}
             </h3>
-            <p class="text-slate-500 mb-8 leading-relaxed">
+            <p class="text-slate-500 dark:text-slate-400 mb-8 leading-relaxed">
                 {{ feedbackMessage() }}
             </p>
 

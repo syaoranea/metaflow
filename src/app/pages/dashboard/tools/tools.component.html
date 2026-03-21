@@ -1,4 +1,4 @@
-<div class="flex-1 flex flex-col min-h-full bg-slate-50 overflow-x-hidden">
+<div class="flex-1 flex flex-col min-h-full bg-slate-50 dark:bg-slate-950 overflow-x-hidden transition-colors">
     <main class="flex-1 p-6 md:p-8">
         <div class="mx-auto max-w-7xl w-full">
 
@@ -30,7 +30,7 @@
             <div class="flex flex-wrap gap-2 mb-10 overflow-x-auto pb-2 scrollbar-hide">
                 @for (cat of categories; track cat) {
                 <button (click)="setCategory(cat)"
-                    [class]="activeCategory() === cat ? 'bg-slate-900 text-white shadow-md' : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'"
+                    [class]="activeCategory() === cat ? 'bg-slate-900 dark:bg-slate-800 text-white shadow-md' : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800'"
                     class="px-5 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 shrink-0">
                     {{cat}}
                 </button>
@@ -39,9 +39,9 @@
 
             <!-- Section Title -->
             <div class="flex items-center justify-between mb-8">
-                <h2 class="text-2xl font-bold text-slate-900">{{ activeCategory() === 'Todos' ? 'Explorar Tudo' :
+                <h2 class="text-2xl font-bold text-slate-900 dark:text-white">{{ activeCategory() === 'Todos' ? 'Explorar Tudo' :
                     activeCategory() }}</h2>
-                <span class="text-sm text-slate-500 font-medium">{{ filteredTools().length }} ferramentas
+                <span class="text-sm text-slate-500 dark:text-slate-400 font-medium">{{ filteredTools().length }} ferramentas
                     encontradas</span>
             </div>
 
@@ -49,7 +49,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 @for (tool of filteredTools(); track tool.id) {
                 <div [routerLink]="tool.mfeRoute ? ['/dashboard/tools', tool.mfeRoute] : ['/dashboard/tools', tool.id]"
-                    class="group relative bg-white rounded-3xl border border-slate-200 p-6 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 cursor-pointer flex flex-col">
+                    class="group relative bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 p-6 transition-all duration-500 hover:shadow-2xl dark:hover:shadow-slate-900/50 hover:-translate-y-2 cursor-pointer flex flex-col">
 
                     <!-- Tool Icon/Gradient -->
                     <div
@@ -116,6 +116,13 @@
                             <path d="M4 6v12c0 1.1.9 2 2 2h14v-4" />
                             <path d="M18 12a2 2 0 0 0-2 2c0 1.1.9 2 2 2h4v-4h-4z" />
                         </svg>
+                        } @else if (tool.icon === 'banknote') {
+                        <svg class="w-8 h-8 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect width="20" height="12" x="2" y="6" rx="2" />
+                            <circle cx="12" cy="12" r="2" />
+                            <path d="M6 12h.01M18 12h.01" />
+                        </svg>
                         }
                     </div>
 
@@ -129,23 +136,23 @@
                             <span class="text-[10px] font-bold text-blue-500 uppercase tracking-widest">Popular</span>
                             }
                         </div>
-                        <h3 class="text-xl font-bold text-slate-900 mb-2 group-hover:text-slate-900 transition-colors">
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2 group-hover:text-slate-900 dark:group-hover:text-white transition-colors">
                             {{ tool.name }}</h3>
-                        <p class="text-slate-500 text-sm line-clamp-3 mb-6">{{ tool.description }}</p>
+                        <p class="text-slate-500 dark:text-slate-400 text-sm line-clamp-3 mb-6">{{ tool.description }}</p>
                     </div>
 
                     <!-- Footer -->
-                    <div class="pt-6 border-t border-slate-100 flex items-center justify-between mt-auto">
+                    <div class="pt-6 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between mt-auto">
                         <div class="flex items-center gap-1.5">
                             <svg class="w-4 h-4 text-amber-400 fill-amber-400" viewBox="0 0 24 24">
                                 <polygon
                                     points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
                                 </polygon>
                             </svg>
-                            <span class="text-sm font-bold text-slate-700">{{ tool.rating }}</span>
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300">{{ tool.rating }}</span>
                         </div>
                         <span
-                            class="text-xs font-bold text-slate-900 bg-slate-100 px-3 py-1.5 rounded-lg group-hover:bg-slate-900 group-hover:text-white transition-all duration-300">
+                            class="text-xs font-bold text-slate-900 dark:text-white bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded-lg group-hover:bg-slate-900 dark:group-hover:bg-primary group-hover:text-white transition-all duration-300">
                             Acessar
                         </span>
                     </div>

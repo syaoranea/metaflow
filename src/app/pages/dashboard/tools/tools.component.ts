@@ -75,6 +75,16 @@ export class ToolsComponent {
             rating: 4.6
         },
         {
+            id: 'controle-financeiro-info',
+            name: 'Controle Financeiro',
+            description: 'Gerenciamento completo do seu fluxo de caixa, despesas e investimentos com integração em tempo real.',
+            icon: 'banknote',
+            category: 'Finanças',
+            color: 'from-emerald-400 to-teal-600',
+            rating: 4.9,
+            featured: true
+        },
+        {
             id: 'financial-planner',
             name: 'Planejador Financeiro',
             description: 'Simule investimentos e projeções de economia para metas de longo prazo.',
