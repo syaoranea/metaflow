@@ -63,19 +63,19 @@ export class ToolDetailsComponent implements OnInit {
             ]
         },
         {
-            id: 'habit-monitor-pro',
-            name: 'Monitor de Hábitos Pro',
-            description: 'Visualizações avançadas e correlações entre seus hábitos e seu humor/energia.',
-            longDescription: 'O Monitor de Hábitos Pro não apenas rastreia se você fez algo, mas entende o impacto disso na sua vida global. Através de correlações avançadas, você entenderá exatamente como um hábito matinal impacta sua produtividade à tarde.',
-            icon: 'activity',
-            category: 'Saúde & Bem-estar',
-            color: 'from-orange-400 to-rose-600',
-            rating: 4.8,
+            id: 'divide-ai',
+            name: 'Divideaí',
+            description: 'App de dividir despesas, aluguel e comida do evento',
+            longDescription: 'App simplificado para divisão de despesas comuns. Ideal para rachar o aluguel, contas de casa ou a comida daquele evento especial com amigos. Transparência e facilidade no acerto de contas.',
+            icon: 'users',
+            category: 'Finanças',
+            color: 'from-cyan-400 to-blue-600',
+            rating: 4.9,
             features: [
-                'Gráficos de calor de consistência',
-                'Correlação hábito vs. humor',
-                'Exportação de dados em CSV/JSON',
-                'Alertas inteligentes de quebra de sequência'
+                'Divisão equitativa ou personalizada de contas',
+                'Controle de despesas compartilhadas (aluguel, luz, internet)',
+                'Gestão de gastos em eventos e viagens',
+                'Cálculo automático de "quem deve quanto para quem"'
             ]
         },
         {

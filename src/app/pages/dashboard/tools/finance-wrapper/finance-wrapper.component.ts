@@ -7,7 +7,8 @@ import { AuthService } from '../../../../services/auth.service';
   selector: 'app-finance-wrapper',
   standalone: true,
   imports: [CommonModule],
-  template: `<div #container></div>`
+  template: `<div #container></div>`,
+  styles: [`:host { display: block; width: 100%; height: 100%; }`]
 })
 export class FinanceWrapperComponent implements OnInit {
   @ViewChild('container', { read: ViewContainerRef, static: true })
@@ -23,9 +24,19 @@ export class FinanceWrapperComponent implements OnInit {
       console.log('Carregando Controle Financeiro MFE para o usuário:', currentUserId);
 
       const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-      const remoteEntryUrl = isLocal 
-        ? 'http://localhost:4204/remoteEntry.json' 
-        : 'https://controle-financeiro-azure-psi.vercel.app/remoteEntry.json';
+      
+      let remoteEntryUrl = 'https://controle-financeiro-azure-psi.vercel.app/remoteEntry.json';
+
+      if (isLocal) {
+        try {
+          const response = await fetch('http://localhost:4204/remoteEntry.json', { method: 'HEAD' });
+          if (response.ok) {
+            remoteEntryUrl = 'http://localhost:4204/remoteEntry.json';
+          }
+        } catch (e) {
+          console.warn('MFE Controle Financeiro local (4204) indisponível. Usando versão de produção.');
+        }
+      }
 
       console.log(`Usando remote entry: ${remoteEntryUrl}`);
 

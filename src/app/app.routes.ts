@@ -60,7 +60,36 @@ export const routes: Routes = [
                     },
                     {
                         path: 'controle-financeiro',
-                        loadComponent: () => import('./pages/dashboard/tools/finance-wrapper/finance-wrapper.component').then(m => m.FinanceWrapperComponent)
+                        loadChildren: async () => {
+                            const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+                            let remoteEntryUrl = 'https://controle-financeiro-azure-psi.vercel.app/remoteEntry.json';
+
+                            if (isLocal) {
+                                try {
+                                    const response = await fetch('http://localhost:4206/remoteEntry.json', { method: 'HEAD' });
+                                    if (response.ok) {
+                                        remoteEntryUrl = 'http://localhost:4206/remoteEntry.json';
+                                    }
+                                } catch (e) {
+                                    console.warn('MFE Controle Financeiro local (4206) indisponível. Usando versão de produção.');
+                                }
+                            }
+
+                            const { loadRemoteModule } = await import('@angular-architects/native-federation');
+                            try {
+                                const m = await (loadRemoteModule as any)({
+                                    type: 'module',
+                                    remoteEntry: remoteEntryUrl,
+                                    exposedModule: './Routes'
+                                });
+                                return m.routes;
+                            } catch (e) {
+                                console.warn('MFE não expõe ./Routes ainda. Usando fallback Component.');
+                                return import('./pages/dashboard/tools/finance-wrapper/finance-wrapper.component').then(c => [{
+                                    path: '', component: c.FinanceWrapperComponent
+                                }]);
+                            }
+                        }
                     },
                     {
                         path: 'planner-devocional',

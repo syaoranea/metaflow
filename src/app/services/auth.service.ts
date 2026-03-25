@@ -46,6 +46,8 @@ export class AuthService {
       console.log('Buscando dados do usuário no BFF...');
       const user = await firstValueFrom(this.http.get<User>(`${environment.apiUrl}/api/auth/me`));
       console.log('Usuário retornado com sucesso:', user);
+      if (user?.id) localStorage.setItem('user_id', user.id);
+      if (user?.email) localStorage.setItem('user_email', user.email);
       this.currentUserSubject.next(user);
       return user;
     } catch (error) {
@@ -66,6 +68,8 @@ export class AuthService {
 
       if (token && token !== 'undefined' && token !== 'null') {
         localStorage.setItem('access_token', token);
+        if (response.user?.id) localStorage.setItem('user_id', response.user.id);
+        if (response.user?.email) localStorage.setItem('user_email', response.user.email);
         this.currentUserSubject.next(response.user);
         return { success: true };
       } else {
@@ -107,6 +111,7 @@ export class AuthService {
       console.error('Erro ao fazer logout no servidor:', error);
     } finally {
       localStorage.removeItem('access_token');
+      localStorage.removeItem('user_id');
       this.currentUserSubject.next(null);
       this.router.navigate(['/login']);
     }

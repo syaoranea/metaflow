@@ -25,9 +25,19 @@ export class PlannerWrapperComponent implements OnInit {
       console.log('Carregando Planner Devocional MFE para o usuário:', currentUserId);
 
       const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-      const remoteEntryUrl = isLocal 
-        ? 'http://localhost:4205/remoteEntry.json' 
-        : 'https://devocional-mu.vercel.app/remoteEntry.json';
+      
+      let remoteEntryUrl = 'https://devocional-mu.vercel.app/remoteEntry.json';
+
+      if (isLocal) {
+        try {
+          const response = await fetch('http://localhost:4205/remoteEntry.json', { method: 'HEAD' });
+          if (response.ok) {
+            remoteEntryUrl = 'http://localhost:4205/remoteEntry.json';
+          }
+        } catch (e) {
+          console.warn('MFE Planner Devocional local (4205) indisponível. Usando versão de produção.');
+        }
+      }
 
       console.log(`Usando remote entry: ${remoteEntryUrl}`);
 
