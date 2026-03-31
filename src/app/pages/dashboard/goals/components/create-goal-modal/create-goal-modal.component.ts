@@ -6,7 +6,6 @@ import { Goal } from '../../../../../services/goal.service';
 
 export interface GoalFormData {
   title: string;
-  progress: number;
   category: string;
   deadline?: string;
   description?: string;
@@ -47,8 +46,7 @@ export class CreateGoalModalComponent implements OnChanges {
     title: ['', Validators.required],
     category: ['Finanças', Validators.required],
     deadline: [''],
-    description: [''],
-    progress: [0]
+    description: ['']
   });
 
   isLoading = false;
@@ -60,16 +58,14 @@ export class CreateGoalModalComponent implements OnChanges {
           title: this.goalToEdit.title,
           category: this.goalToEdit.category || 'Finanças',
           deadline: this.goalToEdit.deadline || '',
-          description: this.goalToEdit.description || '',
-          progress: this.goalToEdit.progress
+          description: this.goalToEdit.description || ''
         });
       } else {
         this.goalForm.reset({
           title: '',
           category: 'Finanças',
           deadline: '',
-          description: '',
-          progress: 0
+          description: ''
         });
       }
       this.isLoading = false;

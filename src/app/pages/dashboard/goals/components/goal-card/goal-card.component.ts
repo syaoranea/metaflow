@@ -2,7 +2,6 @@ import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { Goal } from '../../../../../services/goal.service';
-import { GoalProgressService } from '../../../../../services/goal-progress.service';
 
 @Component({
   selector: 'app-goal-card',
@@ -13,18 +12,14 @@ import { GoalProgressService } from '../../../../../services/goal-progress.servi
 })
 export class GoalCardComponent {
   @Input() goal!: Goal;
-  @Input() generalConsistency: number = 0;
+  /** Pre-computed progress value (0-100) supplied by the parent. */
+  @Input() computedProgress: number = 0;
   @Output() onViewDetails = new EventEmitter<string>();
   @Output() onEdit = new EventEmitter<string>();
 
   private router = inject(Router);
-  private goalProgressService = inject(GoalProgressService);
 
   readonly Math = Math;
-
-  get calculatedProgress(): number {
-    return this.goalProgressService.calculateProgress(this.goal, this.generalConsistency);
-  }
 
   get isFinancesGoal() {
     return this.goal.title === 'Organizar minhas finanças';

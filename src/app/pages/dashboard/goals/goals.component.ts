@@ -1,7 +1,7 @@
 import { Component, inject, OnInit, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GoalService, Goal } from '../../../services/goal.service';
-import { HabitService } from '../../../services/habit.service';
+import { GoalProgressService } from '../../../services/goal-progress.service';
 import { GoalCardComponent } from './components/goal-card/goal-card.component';
 import { CreateGoalModalComponent } from './components/create-goal-modal/create-goal-modal.component';
 import { ConfirmationModalComponent } from '../../../shared/components/modal/confirmation-modal/confirmation-modal.component';
@@ -15,14 +15,16 @@ import { ConfirmationModalComponent } from '../../../shared/components/modal/con
 })
 export class GoalsComponent implements OnInit {
   private goalService = inject(GoalService);
-  private habitService = inject(HabitService);
+  private goalProgressService = inject(GoalProgressService);
 
   isModalOpen = signal(false);
   isDeleteModalOpen = signal(false);
   selectedGoal = signal<Goal | null>(null);
   goalToDeleteSk = signal<string | null>(null);
   allGoals = signal<Goal[]>([]);
-  allHabits = signal<any[]>([]);
+
+  /** goalSk → computed progress (0-100). Populated from cache or freshly computed. */
+  progressMap = signal<Record<string, number>>({});
 
   isLoading = signal(false);
 
@@ -32,22 +34,49 @@ export class GoalsComponent implements OnInit {
     });
   });
 
-  averageConsistency = computed(() => {
-    const habits = this.allHabits();
-    if (!habits.length) return 0;
-    const sum = habits.reduce((acc, h) => acc + (h.successRate ?? 0), 0);
-    return Math.round(sum / habits.length);
-  });
+  async ngOnInit() {
+    // 1. Show cached progress immediately (today's cache)
+    const cached = this.goalProgressService.getCachedProgressMap();
+    if (cached) {
+      this.progressMap.set(cached);
+    }
 
-  ngOnInit() {
-    this.goalService.getGoals();
-    this.goalService.goals$.subscribe((goals: Goal[]) => {
-      this.allGoals.set(goals);
-    });
-    this.habitService.getHabits();
-    this.habitService.habits$.subscribe(habits => {
-      this.allHabits.set(habits);
-    });
+    // 2. Load goals
+    const goals = await this.goalService.getGoals();
+    this.allGoals.set(goals);
+
+    // 3. Load all subgoals to compute average consistency
+    const consistency = await this.loadAverageConsistency(goals);
+    console.log('[GoalsComponent] Consistência geral dos hábitos:', consistency + '%');
+
+    // 4. Compute progress for each goal and cache
+    const map = this.goalProgressService.computeAndCacheAll(goals, consistency);
+    this.progressMap.set(map);
+
+    for (const goal of goals) {
+      console.log(`  → "${goal.title}": progress=${map[goal.sk] ?? 0}% | created_at=${goal.created_at ?? 'N/A'} | deadline=${goal.deadline ?? 'SEM PRAZO'}`);
+    }
+  }
+
+  /**
+   * Fetches subgoals from all goals in parallel and computes
+   * the average successRate (0-100). Returns 0 if none found.
+   */
+  private async loadAverageConsistency(goals: Goal[]): Promise<number> {
+    if (!goals.length) return 0;
+    try {
+      const allSubgoalArrays = await Promise.all(
+        goals.map(g => this.goalService.getSubgoals(g.sk).catch(() => []))
+      );
+      const allSubgoals = allSubgoalArrays.flat();
+      if (!allSubgoals.length) return 0;
+      const withRate = allSubgoals.filter((s: any) => s.successRate != null && s.successRate > 0);
+      if (!withRate.length) return 0;
+      const sum = withRate.reduce((acc: number, s: any) => acc + s.successRate, 0);
+      return Math.round(sum / withRate.length);
+    } catch {
+      return 0;
+    }
   }
 
   openModal() {
