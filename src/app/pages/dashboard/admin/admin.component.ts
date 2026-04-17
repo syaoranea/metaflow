@@ -6,7 +6,7 @@ import { SuggestionService } from '../../../services/suggestion.service';
 import { ButtonComponent } from '../../../components/ui/button/button.component';
 import { ConfirmationModalComponent } from '../../../shared/components/modal/confirmation-modal/confirmation-modal.component';
 
-import { AuthService } from '../../../services/auth.service';
+import { AuthService, User } from '../../../services/auth.service';
 
 @Component({
     selector: 'app-admin',
@@ -26,6 +26,13 @@ export class AdminComponent implements OnInit {
     isDeleteModalOpen = signal(false);
     editingGoalSk = signal<string | null>(null);
     goalToDeleteSk = signal<string | null>(null);
+    currentUser = signal<User | null>(null);
+
+    isLimitReached = computed(() => {
+        const user = this.currentUser();
+        if (!user) return false;
+        return user.plan === 'FREE' && this.goals().length >= 2;
+    });
 
     goalForm: FormGroup;
 
@@ -53,7 +60,11 @@ export class AdminComponent implements OnInit {
         });
     }
 
-    ngOnInit() {
+    async ngOnInit() {
+        this.authService.currentUser$.subscribe(u => this.currentUser.set(u));
+        if (!this.currentUser()) {
+            await this.authService.getUser();
+        }
         this.loadGoals();
     }
 

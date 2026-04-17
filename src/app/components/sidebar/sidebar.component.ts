@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, signal, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { AuthService, User } from '../../services/auth.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -10,8 +11,19 @@ import { CommonModule } from '@angular/common';
   styleUrl: './sidebar.component.scss'
 })
 export class SidebarComponent {
+  private authService = inject(AuthService);
+  currentUser = signal<User | null>(null);
+  
   isMobileOpen: boolean = false;
   isCollapsed: boolean = false;
+
+  constructor() {
+    this.authService.currentUser$.subscribe(u => this.currentUser.set(u));
+  }
+
+  async upgrade() {
+    await this.authService.upgrade();
+  }
 
   toggleCollapse(): void {
     this.isCollapsed = !this.isCollapsed;

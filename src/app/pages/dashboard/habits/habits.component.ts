@@ -39,6 +39,16 @@ export class HabitsComponent implements OnInit {
   // Derived computations
   completedHabitsCookie = signal<string[]>([]);
 
+  /** Calcula quantas vezes um hábito deveria ter sido executado desde sua criação até hoje */
+  private calcExpectedOccurrences(createdAt: string, frequency: number): number {
+    const created = new Date(createdAt);
+    const now = new Date();
+    const daysDiff = Math.max(1, Math.floor((now.getTime() - created.getTime()) / (1000 * 60 * 60 * 24)) + 1);
+    // frequency: 1 = diário, 7 = semanal, 30 = mensal
+    const periodDays = (frequency === 7 || frequency === 2) ? 7 : (frequency === 30 || frequency === 3) ? 30 : 1;
+    return Math.max(1, Math.ceil(daysDiff / periodDays));
+  }
+
   parsedHabits = computed(() => {
     return this.allHabits().map(h => {
       const todayStr = new Date().toISOString().split('T')[0];
@@ -47,7 +57,42 @@ export class HabitsComponent implements OnInit {
       const id = h.sk || h.id;
       const isCompletedInCookie = this.completedHabitsCookie().includes(id);
       const isCompletedToday = todayStr === lastCheckedStr || isCompletedInCookie;
-      const completionRate = h.successRate !== undefined ? h.successRate : (h._meta_total > 0 ? Math.min(100, Math.round((h._progresso_atual / h._meta_total) * 100)) : 0);
+
+      // Calcula taxa de sucesso para "Consistência Geral"
+      // Calcula taxa de sucesso para "Consistência Geral" (Histórica de todos os dias)
+      let completionRate = 0;
+      
+      const dateStr = h.createdAt || h.created_at;
+      const logsArray = Array.isArray(h.logs) ? h.logs : [];
+
+      const apiSuccessRate = h.successRate !== undefined ? h.successRate : h.success_rate;
+
+      if (apiSuccessRate !== undefined && apiSuccessRate !== null && Number(apiSuccessRate) >= 0) {
+        // Se a API calculou um histórico válido, assuma
+        completionRate = Number(apiSuccessRate);
+      } else if (dateStr) {
+        // Cálculo do histórico: dias passados vs logs efetuados
+        const expected = this.calcExpectedOccurrences(dateStr, h.frequency ?? 1);
+        
+        let done = logsArray.length;
+        const hasTodayInLogs = logsArray.some((l: any) => {
+          const d = l.date || l.completedAt || l.createdAt || '';
+          return d.startsWith(todayStr);
+        });
+        
+        // Adiciona otimisticamente caso tenha marcado 'hoje' mas o log ainda não refletiu
+        if (isCompletedToday && !hasTodayInLogs) {
+          done += 1;
+        }
+
+        completionRate = Math.min(100, Math.round((done / expected) * 100));
+      } else if (h._meta_total > 0) {
+        // Último caso: não tem data pra calcular histórico, usa progresso do ciclo
+        completionRate = Math.min(100, Math.round((Number(h._progresso_atual) / Number(h._meta_total)) * 100));
+      }
+      
+      // Previne casos de NaN
+      completionRate = isNaN(completionRate) ? 0 : completionRate;
 
       return {
         ...h,
@@ -74,15 +119,22 @@ export class HabitsComponent implements OnInit {
   totalActive = computed(() => this.parsedHabits().length);
   totalCompletedToday = computed(() => {
     const fromServerAndCookie = this.parsedHabits().filter(h => h.completedToday).length;
-    // Preencher o campo na sessão Consistência Geral, campo hoje com base no total (incluindo o cookie)
     return fromServerAndCookie;
   });
 
   averageExecution = computed(() => {
-    const total = this.totalActive();
-    if (total === 0) return 0;
-    const sum = this.parsedHabits().reduce((acc, h) => acc + h.completionRate, 0);
-    return Math.round(sum / total);
+    const habits = this.parsedHabits();
+    if (habits.length === 0) {
+      console.log('[HabitsComponent] Consistência geral calculada: 0% (Nenhum hábito válido)');
+      return 0;
+    }
+    
+    // Média de TODOS OS DIAS: calcula a média das taxas históricas de completude de todos os hábitos
+    const sum = habits.reduce((acc, h) => acc + h.completionRate, 0);
+    const rate = Math.round(sum / habits.length);
+    
+    console.log(`[HabitsComponent] Consistência geral (Histórica) calculada: ${rate}% (Média de ${habits.length} hábitos ativos)`);
+    return rate;
   });
 
   ngOnInit() {
@@ -126,6 +178,11 @@ export class HabitsComponent implements OnInit {
   private loadAllHabits() {
     this.isLoadingHabits.set(true);
     this.habitService.habits$.subscribe(habits => {
+      console.log('🔍 [DEBUG] Hábitos retornados pela API:', habits);
+      if (habits.length > 0) {
+        console.log('🔍 [DEBUG] Estrutura do primeiro hábito:', JSON.stringify(habits[0], null, 2));
+        console.log('🔍 [DEBUG] Campo logs do primeiro hábito:', habits[0].logs);
+      }
       this.allHabits.set(habits);
       this.isLoadingHabits.set(false);
     });
@@ -184,12 +241,14 @@ export class HabitsComponent implements OnInit {
           pk: parentSk,
           sk: data.id,
           title: data.title,
+          description: data.description,
           frequency: data.frequency
         });
       } else {
         // Create new habit
         res = await this.goalService.createHabit(parentSk, {
           title: data.title,
+          description: data.description,
           frequency: data.frequency
         });
       }

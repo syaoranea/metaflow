@@ -23,6 +23,12 @@
             Meta: {{ habit?.goal?.title || 'Hábito Avulso' }}
         </p>
 
+        @if (habit?.description) {
+        <p class="mt-3 text-sm text-slate-600 dark:text-slate-300 line-clamp-2" [title]="habit.description">
+            {{ habit.description }}
+        </p>
+        }
+
         <div class="mt-5 grid grid-cols-2 gap-4 mb-4">
             <div>
                 <div class="text-xs font-medium text-slate-500 dark:text-slate-400 mb-0.5">Dias seguidos</div>

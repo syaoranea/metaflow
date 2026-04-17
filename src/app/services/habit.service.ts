@@ -2,12 +2,14 @@ import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject, firstValueFrom } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
+import { DashboardCacheService } from './dashboard-cache.service';
 
 export interface Habit {
   id: string;
   userId: string;
   goalId: string | null;
   title: string;
+  description?: string;
   frequency: number;
   createdAt: string;
   goal: { title: string };
@@ -23,6 +25,7 @@ export interface Habit {
 })
 export class HabitService {
   private http = inject(HttpClient);
+  private dashboardCache = inject(DashboardCacheService);
   private apiUrl = `${environment.apiUrl}/api/habits`;
 
   private habitsSubject = new BehaviorSubject<Habit[]>([]);
@@ -47,11 +50,12 @@ export class HabitService {
   /**
    * Cria um novo hábito chamando o BFF.
    */
-  async createHabit(data: { title: string; frequency: number; goalId?: string }): Promise<{ success: boolean, error?: string, habit?: Habit }> {
+  async createHabit(data: { title: string; description?: string; frequency: number; goalId?: string }): Promise<{ success: boolean, error?: string, habit?: Habit }> {
     try {
       const newHabit = await firstValueFrom(this.http.post<Habit>(this.apiUrl, data));
       const currentHabits = this.habitsSubject.value;
       this.habitsSubject.next([...currentHabits, newHabit]);
+      this.dashboardCache.invalidate();
       return { success: true, habit: newHabit };
     } catch (error: any) {
       console.error('Error creating habit', error);
@@ -74,6 +78,7 @@ export class HabitService {
         currentHabits[index] = updatedHabit;
         this.habitsSubject.next([...currentHabits]);
       }
+      this.dashboardCache.invalidate();
       return { success: true };
     } catch (error) {
       console.error('Error toggling habit', error);

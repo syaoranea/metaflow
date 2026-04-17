@@ -5,10 +5,11 @@ import { environment } from '../../environments/environment';
 import { Router } from '@angular/router';
 
 export interface User {
+  userId: string;
   id: string;
   name: string;
   email: string;
-  plan: 'free' | 'pro';
+  plan: 'FREE' | 'PREMIUM';
   profession?: string;
   mainFocus?: string;
 }
@@ -100,6 +101,17 @@ export class AuthService {
       return { success: true };
     } catch (error: any) {
       const msg = error.error?.message || 'Erro ao atualizar usuário no servidor.';
+      return { success: false, error: msg };
+    }
+  }
+
+  async upgrade(): Promise<{ success: boolean, error?: string }> {
+    try {
+      const updatedUser = await firstValueFrom(this.http.post<User>(`${this.apiUrl}/upgrade`, {}));
+      this.currentUserSubject.next(updatedUser);
+      return { success: true };
+    } catch (error: any) {
+      const msg = error.error?.message || 'Erro ao fazer upgrade no servidor.';
       return { success: false, error: msg };
     }
   }

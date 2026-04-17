@@ -15,7 +15,7 @@ export class CreateHabitModalComponent implements OnChanges {
   @Input() goalsOptions: { id: string, title: string }[] = [];
 
   @Output() closeModal = new EventEmitter<void>();
-  @Output() onSave = new EventEmitter<{ id?: string, title: string; goalId: string; frequency: number }>();
+  @Output() onSave = new EventEmitter<{ id?: string, title: string; description?: string; goalId: string; frequency: number }>();
   @Output() onDelete = new EventEmitter<string>();
 
   @Input() habitToEdit: any = null;
@@ -24,6 +24,7 @@ export class CreateHabitModalComponent implements OnChanges {
 
   habitForm: FormGroup = this.fb.group({
     title: ['', Validators.required],
+    description: [''],
     goalId: ['', Validators.required],
     frequency: [1]
   });
@@ -35,12 +36,14 @@ export class CreateHabitModalComponent implements OnChanges {
       if (this.habitToEdit) {
         this.habitForm.patchValue({
           title: this.habitToEdit.title,
+          description: this.habitToEdit.description || '',
           goalId: this.habitToEdit.pk || this.habitToEdit.goalId || '',
           frequency: this.habitToEdit.frequency
         });
       } else {
         this.habitForm.reset({
           title: '',
+          description: '',
           goalId: this.goalsOptions[0]?.id || '',
           frequency: 1
         });

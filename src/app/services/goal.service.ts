@@ -3,6 +3,7 @@ import { BehaviorSubject, Observable, firstValueFrom } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { AuthService } from './auth.service';
+import { DashboardCacheService } from './dashboard-cache.service';
 
 export interface Goal {
   pk: string;     // USER#<userId>
@@ -25,6 +26,7 @@ export interface Goal {
 export class GoalService {
   private http = inject(HttpClient);
   private authService = inject(AuthService);
+  private dashboardCache = inject(DashboardCacheService);
   private apiUrl = `${environment.apiUrl}/api/goals`;
 
   private goalsSubject = new BehaviorSubject<Goal[]>([]);
@@ -74,6 +76,7 @@ export class GoalService {
       const newGoal = await firstValueFrom(this.http.post<Goal>(this.apiUrl, payload));
       const currentGoals = this.goalsSubject.value;
       this.goalsSubject.next([...currentGoals, newGoal]);
+      this.dashboardCache.invalidate();
       return { success: true, goal: newGoal };
     } catch (error) {
       console.error('Error creating goal', error);
@@ -93,6 +96,7 @@ export class GoalService {
       const updatedGoal = await firstValueFrom(this.http.patch<Goal>(`${this.apiUrl}/${encodedSk}`, updateData));
       const currentGoals = this.goalsSubject.value;
       this.goalsSubject.next(currentGoals.map(g => (g.sk === sk) ? updatedGoal : g));
+      this.dashboardCache.invalidate();
       return { success: true, goal: updatedGoal };
     } catch (error) {
       console.error('Error updating goal', error);
@@ -109,6 +113,7 @@ export class GoalService {
       await firstValueFrom(this.http.delete(`${this.apiUrl}/${encodedSk}`));
       const updatedGoals = this.goalsSubject.value.filter(g => g.sk !== sk);
       this.goalsSubject.next(updatedGoals);
+      this.dashboardCache.invalidate();
       return { success: true };
     } catch (error) {
       console.error('Error deleting goal', error);
@@ -132,7 +137,7 @@ export class GoalService {
   /**
    * Creates a new habit (subgoal) linked to a parent goal.
    */
-  async createHabit(parentSk: string, data: { title: string; frequency: number; auto?: boolean }): Promise<{ success: boolean, goal?: Goal }> {
+  async createHabit(parentSk: string, data: { title: string; description?: string; frequency: number; auto?: boolean }): Promise<{ success: boolean, goal?: Goal }> {
     try {
       const pk = parentSk;
       const sk = `HABIT#${crypto.randomUUID()}`;
@@ -143,6 +148,7 @@ export class GoalService {
         sk,
         type: 'goal',
         title: data.title,
+        description: data.description,
         status: 'ACTIVE',
         progress: 0,
         created_at,

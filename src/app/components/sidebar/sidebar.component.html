@@ -79,6 +79,56 @@
         </nav>
     </div>
 
+    <!-- Premium Card -->
+    <div class="px-4 py-4 mt-auto mb-2 transition-all duration-300" 
+        [class.px-4]="!isCollapsed" 
+        [class.px-2]="isCollapsed">
+        <div class="rounded-2xl p-4 transition-all duration-500 relative overflow-hidden group cursor-pointer"
+            [class.bg-gradient-to-br]="true"
+            [class.from-slate-900]="currentUser()?.plan !== 'PREMIUM'"
+            [class.to-slate-800]="currentUser()?.plan !== 'PREMIUM'"
+            [class.from-emerald-600]="currentUser()?.plan === 'PREMIUM'"
+            [class.to-teal-700]="currentUser()?.plan === 'PREMIUM'"
+            [class.shadow-xl]="true"
+            (click)="currentUser()?.plan !== 'PREMIUM' ? upgrade() : null">
+            
+            <div class="absolute -right-4 -top-4 w-16 h-16 rounded-full blur-2xl transition-all duration-700 group-hover:scale-150"
+                 [class.bg-emerald-500/20]="true"></div>
+
+            <div class="relative z-10">
+                <div class="flex items-center gap-3 mb-2" [class.justify-center]="isCollapsed">
+                    <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-white/10 text-white shrink-0">
+                        @if (currentUser()?.plan === 'PREMIUM') {
+                            <svg class="w-5 h-5 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                            </svg>
+                        } @else {
+                            <svg class="w-5 h-5 text-amber-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                            </svg>
+                        }
+                    </div>
+                    <span class="text-xs font-bold text-white uppercase tracking-widest transition-all duration-300"
+                          [class.opacity-0]="isCollapsed" [class.w-0]="isCollapsed">
+                        {{ currentUser()?.plan === 'PREMIUM' ? 'Plano Pro' : 'Plano Free' }}
+                    </span>
+                </div>
+                
+                <div class="transition-all duration-300 overflow-hidden" 
+                     [class.h-0]="isCollapsed" [class.opacity-0]="isCollapsed">
+                    @if (currentUser()?.plan !== 'PREMIUM') {
+                        <p class="text-[10px] text-slate-400 mb-3 leading-tight">Upgrade para metas e ferramentas ilimitadas.</p>
+                        <button class="w-full py-1.5 rounded-lg bg-emerald-500 text-white text-[10px] font-bold hover:bg-emerald-400 transition-colors shadow-lg shadow-emerald-500/20">
+                            Upgrade Agora
+                        </button>
+                    } @else {
+                        <p class="text-[10px] text-emerald-100/70 leading-tight">Você tem acesso total a todos os recursos do Flow.</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Toggle Button (Desktop Only) -->
     <div class="hidden md:flex p-4 border-t border-slate-200 dark:border-slate-800">
         <button (click)="toggleCollapse()" 

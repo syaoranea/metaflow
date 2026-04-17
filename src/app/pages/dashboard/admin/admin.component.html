@@ -4,13 +4,18 @@
             <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Gerenciar Metas</h1>
             <p class="text-slate-500 dark:text-slate-400">Adicione, edite ou remova as metas estratégicas do sistema.</p>
         </div>
-        <app-button (click)="openModal()" customClass="flex items-center gap-2">
-            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <line x1="12" y1="5" x2="12" y2="19"></line>
-                <line x1="5" y1="12" x2="19" y2="12"></line>
-            </svg>
-            Nova Meta
-        </app-button>
+        <div class="flex flex-col items-end gap-2">
+            <app-button (click)="openModal()" [disabled]="isLimitReached()" customClass="flex items-center gap-2">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+                Nova Meta
+            </app-button>
+            @if (isLimitReached()) {
+                <span class="text-[10px] text-amber-600 dark:text-amber-500 font-medium">Limite do plano FREE atingido (2/2)</span>
+            }
+        </div>
     </header>
 
     <!-- Goals Table -->

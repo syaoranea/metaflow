@@ -1,8 +1,9 @@
 <div class="p-6 md:p-8 max-w-7xl mx-auto w-full animate-in fade-in slide-in-from-bottom-4 duration-500">
-    <!-- Stats Grid -->
 
-    <!-- Stats Grid -->
+    <!-- ── Stats Grid ─────────────────────────────────────────────────────── -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+
+        <!-- Consistência -->
         <div class="bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 transition-colors">
             <div class="flex items-center gap-4 mb-4">
                 <div class="p-3 bg-emerald-50 text-emerald-600 rounded-xl">
@@ -13,16 +14,24 @@
                 </div>
                 <h3 class="font-semibold text-slate-700 dark:text-slate-300">Consistência</h3>
             </div>
+            @if (!cache.isLoaded()) {
+            <div class="space-y-3">
+                <div class="stat-skeleton h-9 w-28 rounded-lg"></div>
+                <div class="stat-skeleton h-2.5 w-full rounded-full mt-4"></div>
+            </div>
+            } @else {
             <div class="flex items-end gap-2">
-                <span class="text-3xl font-bold text-slate-900 dark:text-white">{{ stats().habitsCompletion }}%</span>
+                <span class="text-3xl font-bold text-slate-900 dark:text-white">{{ cache.stats().habitsCompletion }}%</span>
                 <span class="text-slate-400 text-sm mb-1">dos hábitos</span>
             </div>
             <div class="mt-4 w-full bg-slate-100 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
                 <div class="bg-emerald-500 h-full transition-all duration-1000"
-                    [style.width.%]="stats().habitsCompletion"></div>
+                    [style.width.%]="cache.stats().habitsCompletion"></div>
             </div>
+            }
         </div>
 
+        <!-- Progresso Metas -->
         <div class="bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 transition-colors">
             <div class="flex items-center gap-4 mb-4">
                 <div class="p-3 bg-blue-50 text-blue-600 rounded-xl">
@@ -34,38 +43,52 @@
                 </div>
                 <h3 class="font-semibold text-slate-700 dark:text-slate-300">Progresso Metas</h3>
             </div>
+            @if (!cache.isLoaded()) {
+            <div class="space-y-3">
+                <div class="stat-skeleton h-9 w-28 rounded-lg"></div>
+                <div class="stat-skeleton h-2.5 w-full rounded-full mt-4"></div>
+            </div>
+            } @else {
             <div class="flex items-end gap-2">
-                <span class="text-3xl font-bold text-slate-900 dark:text-white">{{ stats().goalsProgress }}%</span>
+                <span class="text-3xl font-bold text-slate-900 dark:text-white">{{ cache.stats().goalsProgress }}%</span>
                 <span class="text-slate-400 text-sm mb-1">concluído</span>
             </div>
             <div class="mt-4 w-full bg-slate-100 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
-                <div class="bg-blue-500 h-full transition-all duration-1000" [style.width.%]="stats().goalsProgress">
-                </div>
+                <div class="bg-blue-500 h-full transition-all duration-1000"
+                    [style.width.%]="cache.stats().goalsProgress"></div>
             </div>
+            }
         </div>
 
+        <!-- Frequência -->
         <div class="bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 transition-colors">
             <div class="flex items-center gap-4 mb-4">
                 <div class="p-3 bg-amber-50 text-amber-600 rounded-xl">
                     <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path
-                            d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z">
-                        </path>
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
                     </svg>
                 </div>
                 <h3 class="font-semibold text-slate-700 dark:text-slate-300">Frequência</h3>
             </div>
+            @if (!cache.isLoaded()) {
+            <div class="space-y-3">
+                <div class="stat-skeleton h-9 w-20 rounded-lg"></div>
+                <div class="stat-skeleton h-4 w-44 rounded mt-4"></div>
+            </div>
+            } @else {
             <div class="flex items-end gap-2">
-                <span class="text-3xl font-bold text-slate-900 dark:text-white">{{ stats().activeDays }}</span>
+                <span class="text-3xl font-bold text-slate-900 dark:text-white">{{ cache.stats().activeDays }}</span>
                 <span class="text-slate-400 text-sm mb-1">dias seguidos</span>
             </div>
             <p class="mt-4 text-sm text-slate-500 dark:text-slate-400">Você está no caminho certo!</p>
+            }
         </div>
     </div>
 
-    <!-- Main Content Grid -->
+    <!-- ── Main Content Grid ───────────────────────────────────────────────── -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <!-- Recent Habits -->
+
+        <!-- Hábitos Recentes -->
         <section class="space-y-4">
             <div class="flex items-center justify-between">
                 <h2 class="text-xl font-bold text-slate-900 dark:text-white">Hábitos Recentes</h2>
@@ -73,9 +96,23 @@
                     class="text-sm font-semibold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors">Ver todos →</a>
             </div>
             <div class="space-y-3">
-                @if (recentHabits().length > 0) {
-                @for (habit of recentHabits(); track habit.id) {
-                <div class="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 flex items-center justify-between transition-colors">
+                @if (!cache.isLoaded()) {
+                @for (item of [1,2,3]; track item) {
+                <div class="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <div class="stat-skeleton w-10 h-10 rounded-full"></div>
+                        <div class="space-y-2">
+                            <div class="stat-skeleton h-4 w-32 rounded"></div>
+                            <div class="stat-skeleton h-3 w-20 rounded"></div>
+                        </div>
+                    </div>
+                    <div class="stat-skeleton h-4 w-12 rounded"></div>
+                </div>
+                }
+                } @else if (cache.recentHabits().length > 0) {
+                @for (habit of cache.recentHabits(); track habit.id) {
+                <div
+                    class="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 flex items-center justify-between transition-colors">
                     <div class="flex items-center gap-4">
                         <div
                             class="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-400 font-bold">
@@ -87,8 +124,7 @@
                         </div>
                     </div>
                     <div class="text-right">
-                        <span class="text-sm font-bold text-slate-900 dark:text-white">{{ habit._progresso_atual }}/{{ habit._meta_total
-                            }}</span>
+                        <span class="text-sm font-bold text-slate-900 dark:text-white">{{ habit._progresso_atual }}/{{ habit._meta_total }}</span>
                     </div>
                 </div>
                 }
@@ -101,17 +137,27 @@
             </div>
         </section>
 
-        <!-- Primary Goals -->
+        <!-- Suas Metas -->
         <section class="space-y-4">
             <div class="flex items-center justify-between">
                 <h2 class="text-xl font-bold text-slate-900 dark:text-white">Suas Metas</h2>
                 <a routerLink="/dashboard/goals"
-                    class="text-sm font-semibold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors">Focar em metas
-                    →</a>
+                    class="text-sm font-semibold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors">Focar em metas →</a>
             </div>
             <div class="space-y-3">
-                @if (primaryGoals().length > 0) {
-                @for (goal of primaryGoals(); track goal.sk) {
+                @if (!cache.isLoaded()) {
+                @for (item of [1,2]; track item) {
+                <div class="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800">
+                    <div class="stat-skeleton h-5 w-48 rounded mb-4"></div>
+                    <div class="stat-skeleton h-3 w-full rounded-full mb-2"></div>
+                    <div class="flex justify-between">
+                        <div class="stat-skeleton h-3 w-20 rounded"></div>
+                        <div class="stat-skeleton h-3 w-8 rounded"></div>
+                    </div>
+                </div>
+                }
+                } @else if (cache.primaryGoals().length > 0) {
+                @for (goal of cache.primaryGoals(); track goal.sk) {
                 <div class="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 transition-colors">
                     <h4 class="font-bold text-slate-900 dark:text-white mb-3">{{ goal.title }}</h4>
                     <div class="w-full bg-slate-100 dark:bg-slate-800 h-3 rounded-full overflow-hidden mb-2">
@@ -119,8 +165,7 @@
                             [style.width.%]="goal.progress"></div>
                     </div>
                     <div class="flex justify-between text-xs font-semibold">
-                        <span class="text-indigo-600">{{ goal.progress | number:'1.0-0' }}%
-                            concluído</span>
+                        <span class="text-indigo-600">{{ goal.progress | number:'1.0-0' }}% concluído</span>
                         <span class="text-slate-400">{{ goal.progress }}%</span>
                     </div>
                 </div>
@@ -134,4 +179,5 @@
             </div>
         </section>
     </div>
+
 </div>
